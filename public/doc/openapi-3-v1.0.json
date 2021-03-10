@@ -3339,12 +3339,6 @@
             "title": "Refresh state",
             "type": "string"
           },
-          "bytes_received": {
-            "type": "integer"
-          },
-          "bytes_sent": {
-            "type": "integer"
-          },
           "refresh_started_at": {
             "title": "Refresh started",
             "format": "date-time",

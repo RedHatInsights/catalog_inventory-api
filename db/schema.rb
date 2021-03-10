@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_144831) do
+ActiveRecord::Schema.define(version: 2021_03_10_203929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -300,8 +300,6 @@ ActiveRecord::Schema.define(version: 2021_03_02_144831) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "refresh_state"
-    t.bigint "bytes_received"
-    t.bigint "bytes_sent"
     t.datetime "refresh_started_at"
     t.datetime "refresh_finished_at"
     t.datetime "last_successful_refresh_at"
