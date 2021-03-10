@@ -56,7 +56,5 @@
             "hostname": "source.svc",
             "port": 3000
         }
-    ],
-    "sourceRefreshTimeout": 10,
-    "inactiveTaskReminderTime": 30
+    ]
 }

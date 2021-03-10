@@ -4,7 +4,8 @@ module Events
     GROUP_REF = "catalog_inventory-api".freeze
 
     def initialize(messaging_client_option)
-      super(messaging_client_option, SERVICE_NAME, GROUP_REF)
+      topic = ClowderConfig.instance["kafkaTopics"][SERVICE_NAME] || SERVICE_NAME
+      super(messaging_client_option, topic, GROUP_REF)
     end
 
     private
