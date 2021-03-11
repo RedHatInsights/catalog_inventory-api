@@ -11,4 +11,10 @@ class CheckAvailabilityTask < CloudConnectorTask
       options[:output] = output
     end
   end
+
+  def dispatch
+    super
+
+    source.update!(:availability_message => "Message sent to RHC #{controller_message_id}")
+  end
 end
