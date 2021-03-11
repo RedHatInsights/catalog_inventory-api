@@ -16,9 +16,9 @@ class ClowderConfig
             brokers << "#{broker.hostname}:#{broker.port}"
           end
         end
-        options["kafkaTopics"] = [].tap do |topics|
+        options["kafkaTopics"] = {}.tap do |topics|
           config.kafka.topics.each do |topic|
-            topics << {topic.name.to_s => topic.requestedName.to_s}
+            topics[topic.requestedName] = topic.name
           end
         end
         options["logGroup"] = config.logging.cloudwatch.logGroup
@@ -34,6 +34,7 @@ class ClowderConfig
         options["webPorts"] = 3000
         options["metricsPort"] = 8080
         options["kafkaBrokers"] = ["#{ENV['QUEUE_HOST']}:#{ENV['QUEUE_PORT']}"]
+        options["kafkaTopics"] = {}
         options["logGroup"] = "platform-dev"
         options["awsRegion"] = "us-east-1"
         options["awsAccessKeyId"] = ENV['CW_AWS_ACCESS_KEY_ID']
