@@ -38,20 +38,14 @@ objects:
             secretKeyRef:
               name: catalog-inventory-secrets
               key: secret-key
+        - name: APP_NAME
+          value: ${APP_NAME}
         - name: CLOUD_CONNECTOR_URL
           value: ${CLOUD_CONNECTOR_URL}
         - name: SOURCES_URL
-          value: ${SOURCES_URL}
-        - name: QUEUE_HOST
-          value: ${QUEUE_HOST}
-        - name: QUEUE_PORT
-          value: ${QUEUE_PORT}
-        - name: catalog-inventory_LOG_LEVEL
+          value: http://sources-api.sources-stage.svc:8080
+        - name: RAILS_LOG_LEVEL
           value: ${LOG_LEVEL}
-        - name: catalog-inventory_VALIDTOPICS
-          value: ${catalog-inventory_VALIDTOPICS}
-        - name: catalog-inventory_URL
-          value: ${catalog_inventory_URL}
         - name: CLOWDER_ENABLED
           value: ${CLOWDER_ENABLED}
         - name: INACTIVE_TASK_REMINDER_TIME
@@ -90,22 +84,15 @@ objects:
       name: catalog_inventory_production
 
 parameters:
-- name: SOURCES_URL
-  value: https://ci.cloud.redhat.com/
-- name: QUEUE_HOST
-  value: localhost
-- name: QUEUE_PORT
-  value: "9092"
+- name: APP_NAME
+  value: catalog-inventory
+- name: SOURCES_HOST
+  required: true
+  value: sources-api-svc
 - name: INACTIVE_TASK_REMINDER_TIME
   value: "30"
 - name: SOURCE_REFRESH_TIMEOUT
   value: "10"
-- name: catalog-inventory_VALIDTOPICS
-  value: event-stream,operations-ansible-tower,catalog
-- name: catalog-inventory_URL
-  value: http://catalog-inventory:8080/api/v1.0
-- name: catalog-inventory_MAXSIZE
-  value: '104857600'
 - name: LOG_LEVEL
   value: INFO
 - description: Cpu limit of service
