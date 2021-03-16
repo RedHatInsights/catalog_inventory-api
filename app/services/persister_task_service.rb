@@ -1,4 +1,6 @@
 class PersisterTaskService
+  SERVICE_NAME = "platform.catalog.persister".freeze
+
   def initialize(options)
     @options = JSON.parse(options).deep_symbolize_keys
 
@@ -34,7 +36,9 @@ class PersisterTaskService
       Rails.logger.info("Upload Task #{@upload_task.id} now has persister child task #{@task.id}")
 
       ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
-      KafkaEventService.raise_event("platform.catalog.persister", "persister", payload)
+
+      topic = ClowderConfig.instance["kafkaTopics"][SERVICE_NAME] || SERVICE_NAME
+      KafkaEventService.raise_event(topic, "persister", payload)
     end
 
     self

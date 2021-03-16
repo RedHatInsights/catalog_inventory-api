@@ -77,6 +77,9 @@ objects:
     - replicas: 3
       partitions: 3
       topicName: platform.upload.catalog
+    - replicas: 3
+      partitions: 10
+      topicName: platform.catalog.persister
     dependencies:
     - ingress
     - sources
