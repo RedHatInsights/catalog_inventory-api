@@ -11,6 +11,8 @@ describe PersisterTaskService do
 
   describe "#process" do
     context "when source is enabled" do
+      before { ClowderConfig.instance["CATALOG_INVENTORY_INTERNAL_URL"] = 'url' }
+      after { ClowderConfig.instance["CATALOG_INVENTORY_INTERNAL_URL"] = nil }
       let(:source) { FactoryBot.create(:source, :enabled => true, :tenant => tenant) }
 
       it "should create a FullRefreshPersisterTask" do

@@ -42,8 +42,6 @@ objects:
           value: ${APP_NAME}
         - name: CLOUD_CONNECTOR_URL
           value: ${CLOUD_CONNECTOR_URL}
-        - name: SOURCES_URL
-          value: http://sources-api.sources-stage.svc:8080
         - name: RAILS_LOG_LEVEL
           value: ${LOG_LEVEL}
         - name: CLOWDER_ENABLED
@@ -89,9 +87,6 @@ objects:
 parameters:
 - name: APP_NAME
   value: catalog-inventory
-- name: SOURCES_HOST
-  required: true
-  value: sources-api-svc
 - name: INACTIVE_TASK_REMINDER_TIME
   value: "30"
 - name: SOURCE_REFRESH_TIMEOUT
@@ -117,7 +112,7 @@ parameters:
   value: "true"
 - description: ClowdEnv Name
   name: ENV_NAME
-  requred: false
+  required: false
 - name: ENCRYPTION_KEY
   displayName: Encryption Key (Ephemeral)
   required: true
