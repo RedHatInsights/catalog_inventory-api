@@ -8,12 +8,14 @@ class IncrementalRefreshUploadTask < CloudConnectorTask
   def dispatch
     super
 
-    source.update!(:refresh_started_at   => Time.current,
-                   :refresh_finished_at  => nil,
-                   :refresh_task_id      => id,
-                   :last_refresh_message => "Message sent to RHC #{controller_message_id}",
-                   :refresh_state        => "Uploading")
+    if status == 'ok'
+      source.update!(:refresh_started_at   => Time.current,
+                     :refresh_finished_at  => nil,
+                     :refresh_task_id      => id,
+                     :last_refresh_message => "Message sent to RHC #{controller_message_id}",
+                     :refresh_state        => "Uploading")
 
-    Rails.logger.info("Source #{source.id} set refresh task id to #{id}")
+      Rails.logger.info("Source #{source.id} set refresh task id to #{id}")
+    end
   end
 end
