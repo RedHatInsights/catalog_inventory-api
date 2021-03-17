@@ -38,8 +38,10 @@ objects:
             secretKeyRef:
               name: catalog-inventory-secrets
               key: secret-key
-        - name: APP_NAME
-          value: ${APP_NAME}
+        - name: SOURCES_URL  # remove later
+          value: http://sources-api.sources-stage.svc:8080
+        - name: CURRENT_API_VERSION
+          value: ${CURRENT_API_VERSION}
         - name: CLOUD_CONNECTOR_URL
           value: ${CLOUD_CONNECTOR_URL}
         - name: RAILS_LOG_LEVEL
@@ -85,8 +87,8 @@ objects:
       name: catalog_inventory_production
 
 parameters:
-- name: APP_NAME
-  value: catalog-inventory
+- name: CURRENT_API_VERSION
+  value: v1.0
 - name: INACTIVE_TASK_REMINDER_TIME
   value: "30"
 - name: SOURCE_REFRESH_TIMEOUT
