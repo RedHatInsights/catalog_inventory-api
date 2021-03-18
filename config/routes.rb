@@ -50,10 +50,7 @@ Rails.application.routes.draw do
         resources :service_offering_nodes, :only => [:index]
         resources :service_plans,          :only => [:index]
       end
-      resources :service_plans, :only => [:index, :show] do
-        post "order", :to => "service_plans#order"
-        resources :service_instances, :only => [:index]
-      end
+      resources :service_plans, :only => [:index, :show]
       resources :sources,                  :only => [:index, :show] do
         resources :service_instances,      :only => [:index]
         resources :service_instance_nodes, :only => [:index]
