@@ -1,5 +1,5 @@
 class Source < ApplicationRecord
-  after_update :dispatch_check_availability_task, :if => proc { saved_change_to_enabled?(from: false, to: true) && ready_for_check? }
+  after_update :dispatch_check_availability_task, :if => proc { source_ready? || application_ready? }
 
   attribute :uid, :string, :default => -> { SecureRandom.uuid }
 
@@ -29,6 +29,18 @@ class Source < ApplicationRecord
 
   def ready_for_check?
     cloud_connector_id && enabled
+  end
+
+  def source_ready?
+    (cloud_connector_id && saved_change_to_enabled?(from: false, to: true)).tap do |ready|
+      Rails.logger.info("Source ready: #{ready}, enabled: #{enabled}")
+    end
+  end
+
+  def application_ready?
+    (enabled && saved_change_to_cloud_connector_id?(from: nil)).tap do |ready|
+      Rails.logger.info("Application ready: #{ready}, connector: #{cloud_connector_id}")
+    end
   end
 
   def dispatch_check_availability_task
