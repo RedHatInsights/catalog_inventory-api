@@ -15,7 +15,7 @@ class CheckAvailabilityTask < CloudConnectorTask
   def dispatch
     super
 
-    Rails.logger.info("Updating availability_message: #{controller_message_id}, status: #{status}")
+    reload
     source.update!(:availability_message => "Message sent to RHC #{controller_message_id}") if status == 'ok'
   end
 end

@@ -8,8 +8,8 @@ class FullRefreshUploadTask < CloudConnectorTask
   def dispatch
     super
 
-    Rails.logger.info("2. Updating availability_message: #{controller_message_id}, status: #{status}")
     if status == 'ok'
+      reload
       source.update!(:refresh_started_at   => Time.current,
                      :refresh_finished_at  => nil,
                      :refresh_task_id      => id,
