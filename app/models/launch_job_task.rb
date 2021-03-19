@@ -1,12 +1,15 @@
 class LaunchJobTask < CloudConnectorTask
+  SERVICE_NAME = "platform.catalog-inventory.task-output-stream".freeze
+
   after_update :post_launch_job_task, :if => proc { state == 'completed' }
 
   def post_launch_job_task
+    topic = ClowderConfig.instance["kafkaTopics"][SERVICE_NAME] || SERVICE_NAME
     case status
     when 'ok'
       if tower_job_successful?
         PostLaunchJobTaskService.new(service_options).process
-        KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", payload, forwardable_headers)
+        KafkaEventService.raise_event(topic, "Task.update", payload, forwardable_headers)
       else
         self.status = 'error'
         self.message = output["description"] if output.present?
@@ -16,7 +19,7 @@ class LaunchJobTask < CloudConnectorTask
       end
     when 'error'
       # called by above save!
-      KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", payload, forwardable_headers)
+      KafkaEventService.raise_event(topic, "Task.update", payload, forwardable_headers)
     else
       Rails.logger.error("LaunchJobTask #{id} has invalid status #{status}")
     end

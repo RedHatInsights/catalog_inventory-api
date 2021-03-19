@@ -80,6 +80,12 @@ objects:
     - replicas: 3
       partitions: 10
       topicName: platform.catalog.persister
+    - replicas: 3
+      partitions: 3
+      topicName: platform.sources.status
+    - replicas: 3
+      partitions: 3
+      topicName: platform.catalog-inventory.task-output-stream
     dependencies:
     - ingress
     - sources

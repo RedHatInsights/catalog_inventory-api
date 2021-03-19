@@ -1,4 +1,5 @@
 class PostCheckAvailabilityTaskService < TaskService
+  SERVICE_NAME = "platform.sources.status".freeze
   STATUS_AVAILABLE, STATUS_UNAVAILABLE = %w[available unavailable].freeze
 
   def initialize(options)
@@ -9,7 +10,8 @@ class PostCheckAvailabilityTaskService < TaskService
 
   def process
     update_source
-    KafkaEventService.raise_event("platform.sources.status", "availability_status", kafka_payload.to_json)
+    topic = ClowderConfig.instance["kafkaTopics"][SERVICE_NAME] || SERVICE_NAME
+    KafkaEventService.raise_event(topic, "availability_status", kafka_payload.to_json)
     @task.status == "ok" ? ok_services : Rails.logger.error("Task #{@task.id} failed")
     self
   end
