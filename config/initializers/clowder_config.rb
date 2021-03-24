@@ -65,6 +65,8 @@ class ClowderConfig
 
       # TODO: update with valid url later
       options["CLOUD_CONNECTOR_URL"] = ENV["CLOUD_CONNECTOR_URL"] 
+      options["SOURCES_URL"] ||= ENV["SOURCES_URL"] 
+
       options["CATALOG_INVENTORY_EXTERNAL_URL"] = ENV["CATALOG_INVENTORY_EXTERNAL_URL"] || "Not Specified"
       options["SOURCE_REFRESH_TIMEOUT"] = ENV["SOURCE_REFRESH_TIMEOUT"] || 10 # in minutes
       options["INACTIVE_TASK_REMINDER_TIME"] = ENV["INACTIVE_TASK_REMINDER_TIME"] || 30 # in minutes
