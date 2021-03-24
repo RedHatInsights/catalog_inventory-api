@@ -39,7 +39,7 @@ objects:
               name: catalog-inventory-secrets
               key: secret-key
         - name: SOURCES_URL  # remove later
-          value: http://sources-api.sources-stage.svc:8080
+          value: http://sources-api-svc:8080
         - name: CURRENT_API_VERSION
           value: ${CURRENT_API_VERSION}
         - name: CLOUD_CONNECTOR_URL
