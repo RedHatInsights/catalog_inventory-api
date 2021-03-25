@@ -86,7 +86,7 @@ objects:
     - replicas: 3
       partitions: 3
       topicName: platform.catalog-inventory.task-output-stream
-    dependencies:
+    optionalDependencies: # temp change to optional
     - ingress
     - sources
     database:
