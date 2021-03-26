@@ -67,6 +67,27 @@ objects:
           requests:
             cpu: 200m
             memory: 256Mi
+    jobs:
+    - name: cleanup-tasks
+      schedule: ${CLEANUP_SCHEDULE}
+      concurrencyPolicy: Forbid
+      restartPolicy: Never
+      startingDeadlineSeconds: 30
+      podSpec:
+        image: ${IMAGE}:${IMAGE_TAG}
+        command:
+        - bin/rake
+        - tasks:cleanup
+        env:
+        - name: LOG_LEVEL
+          value: ${LOG_LEVEL}
+        resources:
+          limits:
+            cpu: ${CPU_LIMIT}
+            memory: ${MEMORY_LIMIT}
+          requests:
+            cpu: 200m
+            memory: 256Mi
     kafkaTopics:
     - replicas: 3
       partitions: 3
@@ -133,3 +154,7 @@ parameters:
   description: Rails SECRET_KEY_BASE
   from: "[a-f0-9]{128}"
   generate: expression
+- description: Schedule to cleanup tasks
+  displayName: Schedule to cleanup tasks
+  name: CLEANUP_SCHEDULE
+  value: "0 0 * * *"
