@@ -12,7 +12,7 @@ gem 'json-schema',                     '~> 2.8'
 gem 'manageiq-loggers',                "~> 0.4.0", ">= 0.4.2"
 gem 'manageiq-messaging',              '~> 1.0.0'
 gem 'manageiq-password',               '~> 0.2', ">= 0.2.1"
-gem 'mimemagic',                       '~> 0.3.3'
+gem 'mimemagic',                       '~> 0.4.3'
 gem 'more_core_extensions'
 gem 'pg',                              '~> 1.0', :require => false
 gem 'puma',                            '~> 4.3.5', '>= 4.3.5'

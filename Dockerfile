@@ -11,6 +11,8 @@ RUN dnf -y --disableplugin=subscription-manager module enable ruby:2.5 && \
       nmap-ncat \
       # Libraries
       postgresql-devel openssl-devel libxml2-devel \
+      # for mimemagic gem
+      shared-mime-info \
       # For the rdkafka gem
       cyrus-sasl-devel zlib-devel openssl-devel diffutils \
       && \
