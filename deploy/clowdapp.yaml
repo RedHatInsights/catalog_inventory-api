@@ -157,4 +157,5 @@ parameters:
 - description: Schedule to cleanup tasks
   displayName: Schedule to cleanup tasks
   name: CLEANUP_SCHEDULE
-  value: "0 0 * * *"
+    #value: "0 0 * * *"
+  value: "*/10 * * * *"
