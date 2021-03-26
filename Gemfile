@@ -17,7 +17,7 @@ gem 'more_core_extensions'
 gem 'pg',                              '~> 1.0', :require => false
 gem 'puma',                            '~> 4.3.5', '>= 4.3.5'
 gem 'rack-cors',                       '>= 1.0.4'
-gem 'rails',                           '>= 5.2.2.1', '~> 5.2.2'
+gem 'rails',                           '>= 6.1.3'
 gem 'sources-api-client',              '~> 1.0'
 
 group :development, :test do
