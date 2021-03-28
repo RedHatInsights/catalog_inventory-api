@@ -1,0 +1,3 @@
+#! /bin/bash
+
+rake tasks:cleanup RAILS_ENV=production
