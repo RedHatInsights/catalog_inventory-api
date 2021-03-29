@@ -1,6 +1,6 @@
 module InitTypesEnvs
   # skip the initializer code if in travis build
-  if ENV["TRAVIS"].blank? && ENV["RAILS_ENV"] && ENV["RAILS_ENV"] != "test"
+  if ENV["SCHED_TASK"].blank? && ENV["TRAVIS"].blank? && ENV["RAILS_ENV"] && ENV["RAILS_ENV"] != "test"
     SOURCE_TYPE_NAME = "ansible-tower".freeze
     APPLICATION_TYPE_NAME = "/insights/platform/catalog".freeze
 

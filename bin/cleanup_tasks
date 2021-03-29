@@ -44,6 +44,7 @@ safepass=$(urlescape ${DATABASE_PASSWORD})
 
 export RAILS_ENV=production
 export DATABASE_URL="postgresql://${safeuser}:${safepass}@${DATABASE_HOST}:${DATABASE_PORT}/catalog_inventory_production?encoding=utf8&pool=5&wait_timeout=5"
+export SCHED_TASK=1
 
 write_encryption_key
 
