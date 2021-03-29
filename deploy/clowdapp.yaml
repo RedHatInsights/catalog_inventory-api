@@ -39,7 +39,7 @@ objects:
               name: catalog-inventory-secrets
               key: secret-key
         - name: SOURCES_URL  # remove later
-          value: http://sources-api-svc:8080
+          value: http://sources-api-svc:8000
         - name: CURRENT_API_VERSION
           value: ${CURRENT_API_VERSION}
         - name: CLOUD_CONNECTOR_URL
@@ -90,6 +90,8 @@ objects:
               key: secret-key
         - name: LOG_LEVEL
           value: ${LOG_LEVEL}
+        - name: SOURCES_URL  # remove later
+          value: http://sources-api-svc:8000
         resources:
           limits:
             cpu: ${CPU_LIMIT}
