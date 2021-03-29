@@ -1,0 +1,54 @@
+#!/bin/bash
+
+function urlescape() {
+  PAYLOAD="$1" ruby -rcgi -e "puts CGI.escape(ENV['PAYLOAD'])"
+}
+
+function check_svc_status() {
+  local SVC_NAME=$1 SVC_PORT=$2
+
+  [[ $# -lt 2 ]] && echo "Error something seems wrong, we need at least two parameters to check service status" && exit 1
+
+  echo "== Checking ${SVC_NAME}:$SVC_PORT status =="
+
+  while true; do
+    ncat ${SVC_NAME} ${SVC_PORT} < /dev/null && break
+    sleep 5
+  done
+  echo "${SVC_NAME}:${SVC_PORT} - accepting connections"
+}
+
+function write_encryption_key() {
+  echo "== Writing encryption key =="
+  cat > $WORKDIR/v2_key << KEY
+---
+:algorithm: aes-256-cbc
+:key: ${ENCRYPTION_KEY}
+KEY
+}
+
+if [[ ! -z "${ACG_CONFIG}" ]]; then
+  export DATABASE_HOST=`jq -r '.database.hostname' ${ACG_CONFIG}`
+  export DATABASE_PORT=`jq -r '.database.port' ${ACG_CONFIG}`
+  DATABASE_USER=`jq -r '.database.username' ${ACG_CONFIG}`
+  DATABASE_PASSWORD=`jq -r '.database.password' ${ACG_CONFIG}`
+
+  export PGSSLROOTCERT=`jq -r '.database.rdsCa' ${ACG_CONFIG}`
+  export RAILS_PORT=`jq -r '.webPort' ${ACG_CONFIG}`
+else
+  echo "${ACG_CONFIG} is not specified" && exit 1
+fi
+
+safeuser=$(urlescape ${DATABASE_USER})
+safepass=$(urlescape ${DATABASE_PASSWORD})
+
+export RAILS_ENV=production
+export DATABASE_URL="postgresql://${safeuser}:${safepass}@${DATABASE_HOST}:${DATABASE_PORT}/catalog_inventory_production?encoding=utf8&pool=5&wait_timeout=5"
+export SCHED_TASK=1
+
+write_encryption_key
+
+# Wait for postgres to be ready
+check_svc_status $DATABASE_HOST $DATABASE_PORT
+
+bundle exec rake tasks:cleanup
