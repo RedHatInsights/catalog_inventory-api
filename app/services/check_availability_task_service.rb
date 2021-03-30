@@ -55,7 +55,7 @@ class CheckAvailabilityTaskService < TaskService
     check_availability_job = CatalogInventory::Job.new
     check_availability_job.href_slug = "api/v2/config/"
     check_availability_job.method = "get"
-    check_availability_job.apply_filter = {"version":"version", "ansible_version":"ansible_version"}
+    check_availability_job.apply_filter = {"version":"version"}
     jobs << check_availability_job
 
     jobs
