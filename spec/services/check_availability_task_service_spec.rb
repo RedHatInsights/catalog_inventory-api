@@ -21,7 +21,7 @@ describe CheckAvailabilityTaskService do
 
         expect(task.type).to eq('CheckAvailabilityTask')
         expect(task.input["response_format"]).to eq('json')
-        expect(task.input["jobs"]).to eq([{"apply_filter"=>{"ansible_version"=>"ansible_version", "version"=>"version"}, "href_slug"=>"api/v2/config/", "method"=>"get"}])
+        expect(task.input["jobs"]).to eq([{"apply_filter"=>{"version"=>"version"}, "href_slug"=>"api/v2/config/", "method"=>"get"}])
         expect(task.input["upload_url"]).to be_nil
         expect(task.state).to eq('pending')
         expect(task.status).to eq('ok')
