@@ -6,7 +6,13 @@ module Api
 
       def refresh
         source = Source.find(params.require(:source_id))
-        SourceRefreshService.new(source).process
+        if source.availability_status == "available"
+          SourceRefreshService.new(source).process
+        else
+          Rails.logger.info("Source #{source.id} is not available, starting availability check ...")
+          task = CheckAvailabilityTaskService.new(:source_id => source.id).process.task
+          task.dispatch
+        end
 
         head :no_content
       rescue CatalogInventory::Exceptions::RecordLockedException, CatalogInventory::Exceptions::RefreshAlreadyRunningException => e
