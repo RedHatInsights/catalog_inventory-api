@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_10_203929) do
+ActiveRecord::Schema.define(version: 2021_04_07_123702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2021_03_10_203929) do
     t.datetime "source_created_at"
     t.datetime "source_deleted_at"
     t.datetime "last_seen_at"
+    t.datetime "source_updated_at"
     t.index ["archived_at"], name: "index_service_credential_types_on_archived_at"
     t.index ["last_seen_at"], name: "index_service_credential_types_on_last_seen_at"
     t.index ["source_id", "source_ref"], name: "index_service_credential_types_on_source_id_and_source_ref", unique: true
@@ -261,6 +262,7 @@ ActiveRecord::Schema.define(version: 2021_03_10_203929) do
     t.string "support_url"
     t.bigint "service_offering_icon_id"
     t.bigint "service_inventory_id"
+    t.datetime "source_updated_at"
     t.index ["archived_at"], name: "index_service_offerings_on_archived_at"
     t.index ["last_seen_at"], name: "index_service_offerings_on_last_seen_at"
     t.index ["service_inventory_id"], name: "index_service_offerings_on_service_inventory_id"
@@ -285,6 +287,7 @@ ActiveRecord::Schema.define(version: 2021_03_10_203929) do
     t.jsonb "update_json_schema"
     t.datetime "archived_at"
     t.datetime "last_seen_at"
+    t.datetime "source_updated_at"
     t.index ["archived_at"], name: "index_service_plans_on_archived_at"
     t.index ["last_seen_at"], name: "index_service_plans_on_last_seen_at"
     t.index ["service_offering_id"], name: "index_service_plans_on_service_offering_id"
