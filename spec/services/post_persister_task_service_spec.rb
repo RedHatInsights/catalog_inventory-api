@@ -20,7 +20,7 @@ describe PostPersisterTaskService do
       subject.process
 
       source.reload
-      #expect(source.last_refresh_message).to eq(last_refresh_message)
+      expect(source.last_refresh_message).to eq(last_refresh_message)
       expect(source.refresh_state).to eq(refresh_state)
     end
   end

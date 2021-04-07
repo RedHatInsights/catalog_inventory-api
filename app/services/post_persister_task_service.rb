@@ -30,7 +30,7 @@ class PostPersisterTaskService < TaskService
      :previous_sha               => @upload_task.output["sha256"],
      :previous_size              => @upload_task.output["tar_size"],
      :refresh_finished_at        => Time.current,
-     :last_refresh_message       => "Refresh completed",
+     :last_refresh_message       => refresh_stats_message,
      :refresh_state              => "Done"}
   end
 
