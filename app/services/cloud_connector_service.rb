@@ -34,10 +34,19 @@ class CloudConnectorService
             'payload':   payload}
     uri = URI.parse(cc_url)
 
-    header = {'Content-Type': 'application/json'}.merge(Insights::API::Common::Request.current_forwardable)
+    cloud_controller_psk = ClowderConfig.instance["CLOUD_CONTROLLER_PSK"]
+    headers = if cloud_controller_psk.present?
+                {'Content-Type'                   => 'application/json',
+                 'x-rh-cloud-connector-client-id' => 'catalog-inventory',
+                 'x-rh-cloud-connector-psk'       => cloud_controller_psk,
+                 'x-rh-cloud-connector-account'   => account}
+              else
+                {'Content-Type' => 'application/json'}
+              end.merge(Insights::API::Common::Request.current_forwardable)
+
     # Create the HTTP objects
     http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.request_uri, header)
+    request = Net::HTTP::Post.new(uri.request_uri, headers)
     request.body = body.to_json
 
     # Send the request

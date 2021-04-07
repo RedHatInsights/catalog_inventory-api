@@ -62,6 +62,7 @@ class ClowderConfig
 
       options["APP_NAME"] = "catalog-inventory"
       options["PATH_PREFIX"] = "api"
+      options["CLOUD_CONTROLLER_PSK"] = ENV['CLOUD_CONTROLLER_PSK']
 
       # TODO: update with valid url later
       options["CLOUD_CONNECTOR_URL"] = ENV["CLOUD_CONNECTOR_URL"] 
