@@ -8,8 +8,8 @@ class IncrementalRefreshUploadTask < CloudConnectorTask
   def dispatch
     super
 
+    reload
     if status == 'ok'
-      reload
       source.update!(:refresh_started_at   => Time.current,
                      :refresh_finished_at  => nil,
                      :refresh_task_id      => id,
