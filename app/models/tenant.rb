@@ -3,8 +3,6 @@ class Tenant < ApplicationRecord
   has_many :service_credential_types
   has_many :service_instances
   has_many :service_instance_service_credentials
-  has_many :service_instance_nodes
-  has_many :service_instance_node_service_credentials
   has_many :service_inventories
   has_many :service_offerings
   has_many :service_offering_service_credentials

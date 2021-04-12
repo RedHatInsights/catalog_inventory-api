@@ -12,7 +12,6 @@ RSpec.describe("v1.0 - Sources") do
     "sources",
     [
       :service_instances,
-      :service_instance_nodes,
       :service_inventories,
       :service_offerings,
       :service_offering_nodes,
