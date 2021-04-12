@@ -1,5 +1,4 @@
 require_relative "shared_examples_for_index"
-require_relative "shared_examples_for_tags"
 
 RSpec.describe("v1.0 - ServiceOffering") do
   include ::Spec::Support::TenantIdentity
@@ -20,6 +19,4 @@ RSpec.describe("v1.0 - ServiceOffering") do
     "service_offerings",
     ["service_instances", "service_plans", "service_offering_nodes"],
   )
-
-  include_examples("v1x0_test_tags_subcollection", "service_offerings")
 end

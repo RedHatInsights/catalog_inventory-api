@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
       resources :service_offering_nodes, :only => [:index, :show]
 
-      resources :service_offerings, :only => [:index, :show], :concerns => [:taggable] do
+      resources :service_offerings, :only => [:index, :show] do
         post "applied_inventories_tags", :to => "service_offerings#applied_inventories_tags"
         post "order", :to => "service_offerings#order"
         resources :service_instances,      :only => [:index]
@@ -53,7 +53,6 @@ Rails.application.routes.draw do
 
       resources :tags, :only => [:index, :show] do
         resources :service_inventories, :only => [:index]
-        resources :service_offerings,   :only => [:index]
       end
       resources :tasks, :only => [:index, :show, :update]
     end
