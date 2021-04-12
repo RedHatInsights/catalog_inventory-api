@@ -16,8 +16,7 @@ RSpec.describe("v1.0 - Tag") do
     "v1x0_test_index_and_subcollections",
     "tags",
     [
-      :service_inventories,
-      :service_offerings,
+      :service_inventories
     ],
   )
 end
