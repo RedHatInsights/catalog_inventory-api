@@ -287,55 +287,6 @@
         }
       }
     },
-    "/service_instances/{id}/service_credentials": {
-      "get": {
-        "tags": [
-          "ServiceInstance"
-        ],
-        "summary": "List ServiceCredentials for ServiceInstance",
-        "operationId": "listServiceInstanceServiceCredentials",
-        "description": "Returns an array of ServiceCredential objects",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/QueryLimit"
-          },
-          {
-            "$ref": "#/components/parameters/QueryOffset"
-          },
-          {
-            "$ref": "#/components/parameters/QueryFilter"
-          },
-          {
-            "$ref": "#/components/parameters/QuerySortBy"
-          },
-          {
-            "$ref": "#/components/parameters/ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ServiceCredentials collection",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceCredentialsCollection"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorNotFound"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/service_inventories": {
       "get": {
         "tags": [
@@ -716,55 +667,6 @@
         }
       }
     },
-    "/service_offering_nodes/{id}/service_credentials": {
-      "get": {
-        "tags": [
-          "ServiceOfferingNode"
-        ],
-        "summary": "List ServiceCredentials for ServiceOfferingNode",
-        "operationId": "listServiceOfferingNodeServiceCredentials",
-        "description": "Returns an array of ServiceCredential objects",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/QueryLimit"
-          },
-          {
-            "$ref": "#/components/parameters/QueryOffset"
-          },
-          {
-            "$ref": "#/components/parameters/QueryFilter"
-          },
-          {
-            "$ref": "#/components/parameters/QuerySortBy"
-          },
-          {
-            "$ref": "#/components/parameters/ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ServiceCredentials collection",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceCredentialsCollection"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorNotFound"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/service_offerings": {
       "get": {
         "tags": [
@@ -924,55 +826,6 @@
           },
           "400": {
             "description": "BadRequest"
-          }
-        }
-      }
-    },
-    "/service_offerings/{id}/service_credentials": {
-      "get": {
-        "tags": [
-          "ServiceOffering"
-        ],
-        "summary": "List ServiceCredentials for ServiceOffering",
-        "operationId": "listServiceOfferingServiceCredentials",
-        "description": "Returns an array of ServiceCredential objects",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/QueryLimit"
-          },
-          {
-            "$ref": "#/components/parameters/QueryOffset"
-          },
-          {
-            "$ref": "#/components/parameters/QueryFilter"
-          },
-          {
-            "$ref": "#/components/parameters/QuerySortBy"
-          },
-          {
-            "$ref": "#/components/parameters/ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ServiceCredentials collection",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceCredentialsCollection"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorNotFound"
-                }
-              }
-            }
           }
         }
       }

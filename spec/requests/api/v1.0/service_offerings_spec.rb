@@ -18,7 +18,7 @@ RSpec.describe("v1.0 - ServiceOffering") do
   include_examples(
     "v1x0_test_index_and_subcollections",
     "service_offerings",
-    ["service_instances", "service_plans", "service_offering_nodes", "service_credentials"],
+    ["service_instances", "service_plans", "service_offering_nodes"],
   )
 
   include_examples("v1x0_test_tags_subcollection", "service_offerings")
