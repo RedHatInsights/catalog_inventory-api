@@ -51,9 +51,7 @@ Rails.application.routes.draw do
       end
       patch '/sources/:source_id/refresh', :to => "sources#refresh", :as => 'refresh'
 
-      resources :tags, :only => [:index, :show] do
-        resources :service_inventories, :only => [:index]
-      end
+      resources :tags, :only => [:index]
       resources :tasks, :only => [:index, :show, :update]
     end
   end
