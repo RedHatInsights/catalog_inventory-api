@@ -126,7 +126,7 @@ objects:
     - ingress
     - sources
     database:
-      name: catalog_inventory_production
+      name: catalog_inventory
 
 parameters:
 - name: CURRENT_API_VERSION
