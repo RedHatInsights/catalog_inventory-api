@@ -13,7 +13,7 @@ objects:
   stringData:
     encryption-key: "${ENCRYPTION_KEY}"
     secret-key: "${SECRET_KEY}"
-    cloud-controller-key: "${CLOUD_INVENTORY_PSK}"
+    cloud-controller-key: "${CLOUD_CONTROLLER_PSK}"
 - apiVersion: cloud.redhat.com/v1alpha1
   kind: ClowdApp
   metadata:
@@ -39,11 +39,12 @@ objects:
             secretKeyRef:
               name: catalog-inventory-secrets
               key: secret-key
-        - name: CLOUD_INVENTORY_PSK
+        - name: CLOUD_CONTROLLER_PSK
           valueFrom:
             secretKeyRef:
               name: catalog-inventory-psk
-              key: cloud-controller-key
+              key: client-psk
+
         - name: SOURCES_URL  # remove later
           value: http://sources-api-svc:8000
         - name: CURRENT_API_VERSION
@@ -169,7 +170,7 @@ parameters:
   description: Rails SECRET_KEY_BASE
   from: "[a-f0-9]{128}"
   generate: expression
-- name: CLOUD_INVENTORY_PSK
+- name: CLOUD_CONTROLLER_PSK
   displayName: Pre Shared Key for Cloud Controller
   required: true
   description: Pre Shared Key
