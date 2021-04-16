@@ -45,12 +45,14 @@ objects:
               name: catalog-inventory-psk
               key: client-psk
 
-        - name: SOURCES_URL  # remove later
-          value: http://sources-api-svc:8000
+        - name: SOURCES_URL
+          value: ${SOURCES_SCHEME}://${SOURCES_HOST}:${SOURCES_PORT}
         - name: CURRENT_API_VERSION
           value: ${CURRENT_API_VERSION}
         - name: CLOUD_CONNECTOR_URL
-          value: ${CLOUD_CONNECTOR_URL}
+          value: ${CLOUD_CONNECTOR_SCHEME}://${CLOUD_CONNECTOR_HOST}:${CLOUD_CONNECTOR_PORT}
+        - name: CATALOG_INVENTORY_INTERNAL_URL
+          value: ${CATALOG_INVENTORY_INTERNAL_SCHEME}://${CATALOG_INVENTORY_INTERNAL_HOST}:${CATALOG_INVENTORY_INTERNAL_PORT}
         - name: RAILS_LOG_LEVEL
           value: ${LOG_LEVEL}
         - name: CLOWDER_ENABLED
@@ -180,3 +182,45 @@ parameters:
   displayName: Schedule to cleanup tasks
   name: CLEANUP_SCHEDULE
   value: "0 0 * * *"
+- description: Host to use for the Sources service URL.
+  displayName: Sources Service Host
+  name: SOURCES_HOST
+  value: sources
+- description: Port to use for the Sources service URL.
+  displayName: Sources Service Port
+  name: SOURCES_PORT
+  required: true
+  value: '8000'
+- description: Scheme to use for the Sources service URL. Can be either http or https
+  displayName: Sources Service Scheme
+  name: SOURCES_SCHEME
+  required: true
+  value: http
+- description: Port to use for the Cloud Connector service URL.
+  displayName: Cloud Connector Service Port
+  name: CLOUD_CONNECTOR_PORT
+  required: true
+  value: '8080'
+- description: Scheme to use for the Cloud Connector service URL. Can be either http or https
+  displayName: Cloud Connector Service Scheme
+  name: CLOUD_CONNECTOR_SCHEME
+  required: true
+  value: http
+- description: Host to use for the Cloud Connector service URL.
+  displayName: Cloud Connector Service URL
+  name: CLOUD_CONNECTOR_HOST
+  value: "cloud-connector.cloud-connector-stage.svc.cluster.local" # change later when it set to env
+- description: Port to use for the internal Catalog Inventory service URL.
+  displayName: Internal Catalog Inventory Service Port
+  name: CATALOG_INVENTORY_INTERNAL_PORT
+  required: true
+  value: '8000'
+- description: Scheme to use for the internal Catalog Inventory service URL. Can be either http or https
+  displayName: Internal Catalog Inventory Service Scheme
+  name: CATALOG_INVENTORY_INTERNAL_SCHEME
+  required: true
+  value: http
+- description: Host to use for the internal Catalog Inventory service URL.
+  displayName: Internal Catalog Inventory Service URL
+  name: CATALOG_INVENTORY_INTERNAL_HOST
+  value: "catalog-inventory.catalog-inventory-stage.svc.cluster.local" # change later when it set to env
