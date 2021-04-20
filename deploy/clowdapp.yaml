@@ -13,7 +13,16 @@ objects:
   stringData:
     encryption-key: "${ENCRYPTION_KEY}"
     secret-key: "${SECRET_KEY}"
-    cloud-controller-key: "${CLOUD_CONTROLLER_PSK}"
+
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: catalog-inventory-psk
+    labels:
+      app: catalog-inventory
+  stringData:
+    client-psk: "${CLOUD_CONTROLLER_PSK}"
+
 - apiVersion: cloud.redhat.com/v1alpha1
   kind: ClowdApp
   metadata:
@@ -226,3 +235,7 @@ parameters:
   displayName: Internal Catalog Inventory Service URL
   name: CATALOG_INVENTORY_HOST
   value: catalog-inventory-api
+- description: Host to use for the external Catalog Inventory service URL.
+  displayName: External Catalog Inventory Service URL
+  name: CATALOG_INVENTORY_EXTERNAL_HOST
+  value: cloud.stage.redhat.com
