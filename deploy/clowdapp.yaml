@@ -138,7 +138,7 @@ objects:
       topicName: platform.catalog-inventory.task-output-stream
     optionalDependencies: # temp change to optional
     - ingress
-    - sources
+    - sources-api
     database:
       name: catalog-inventory
 
