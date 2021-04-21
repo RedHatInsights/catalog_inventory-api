@@ -13,7 +13,16 @@ objects:
   stringData:
     encryption-key: "${ENCRYPTION_KEY}"
     secret-key: "${SECRET_KEY}"
-    cloud-controller-key: "${CLOUD_CONTROLLER_PSK}"
+
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: catalog-inventory-psk
+    labels:
+      app: catalog-inventory
+  stringData:
+    client-psk: "${CLOUD_CONTROLLER_PSK}"
+
 - apiVersion: cloud.redhat.com/v1alpha1
   kind: ClowdApp
   metadata:
@@ -52,7 +61,9 @@ objects:
         - name: CLOUD_CONNECTOR_URL
           value: ${CLOUD_CONNECTOR_SCHEME}://${CLOUD_CONNECTOR_HOST}:${CLOUD_CONNECTOR_PORT}
         - name: CATALOG_INVENTORY_INTERNAL_URL
-          value: ${CATALOG_INVENTORY_INTERNAL_SCHEME}://${CATALOG_INVENTORY_INTERNAL_HOST}:${CATALOG_INVENTORY_INTERNAL_PORT}
+          value: ${CATALOG_INVENTORY_SCHEME}://${CATALOG_INVENTORY_HOST}:${CATALOG_INVENTORY_PORT}
+        - name: CATALOG_INVENTORY_EXTERNAL_URL
+          value: https://${CATALOG_INVENTORY_EXTERNAL_HOST}/api/catalog-inventory
         - name: RAILS_LOG_LEVEL
           value: ${LOG_LEVEL}
         - name: CLOWDER_ENABLED
@@ -185,7 +196,7 @@ parameters:
 - description: Host to use for the Sources service URL.
   displayName: Sources Service Host
   name: SOURCES_HOST
-  value: sources
+  value: sources-api-svc
 - description: Port to use for the Sources service URL.
   displayName: Sources Service Port
   name: SOURCES_PORT
@@ -209,18 +220,22 @@ parameters:
 - description: Host to use for the Cloud Connector service URL.
   displayName: Cloud Connector Service URL
   name: CLOUD_CONNECTOR_HOST
-  value: "cloud-connector.cloud-connector-stage.svc.cluster.local" # change later when it set to env
+  value: cloud-connector
 - description: Port to use for the internal Catalog Inventory service URL.
   displayName: Internal Catalog Inventory Service Port
-  name: CATALOG_INVENTORY_INTERNAL_PORT
+  name: CATALOG_INVENTORY_PORT
   required: true
   value: '8000'
 - description: Scheme to use for the internal Catalog Inventory service URL. Can be either http or https
   displayName: Internal Catalog Inventory Service Scheme
-  name: CATALOG_INVENTORY_INTERNAL_SCHEME
+  name: CATALOG_INVENTORY_SCHEME
   required: true
   value: http
 - description: Host to use for the internal Catalog Inventory service URL.
   displayName: Internal Catalog Inventory Service URL
-  name: CATALOG_INVENTORY_INTERNAL_HOST
-  value: "catalog-inventory.catalog-inventory-stage.svc.cluster.local" # change later when it set to env
+  name: CATALOG_INVENTORY_HOST
+  value: catalog-inventory-api
+- description: Host to use for the external Catalog Inventory service URL.
+  displayName: External Catalog Inventory Service URL
+  name: CATALOG_INVENTORY_EXTERNAL_HOST
+  value: cloud.stage.redhat.com
