@@ -141,6 +141,21 @@ objects:
     - sources
     database:
       name: catalog-inventory
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: catalog-inventory-api
+    labels:
+      app: catalog-inventory-api
+      pod: catalog-inventory-api
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8000
+      name: weblegacy
+    selector:
+      pod: catalog-inventory-api
 
 parameters:
 - name: CURRENT_API_VERSION
