@@ -14,6 +14,7 @@ class CloudConnectorService
     @task_url = @options[:task_url]
     @cloud_connector_id = @options[:cloud_connector_id]
     @cloud_connector_url = @options[:cloud_connector_url]
+    @cc_url = File.join(@cloud_connector_url, API_VERSION, "message")
     @task = Task.find(@task_id)
   end
 
@@ -27,12 +28,11 @@ class CloudConnectorService
   def send_to_cloud_controller
     account = @task.tenant.external_tenant
 
-    cc_url = File.join(@cloud_connector_url, API_VERSION, "message")
     body = {'account':   account,
             'recipient': @cloud_connector_id,
             'directive': DIRECTIVE,
             'payload':   payload}
-    uri = URI.parse(cc_url)
+    uri = URI.parse(@cc_url)
 
     cloud_controller_psk = ClowderConfig.instance["CLOUD_CONTROLLER_PSK"]
     headers = if cloud_controller_psk.present?
@@ -59,7 +59,7 @@ class CloudConnectorService
   end
 
   def task_failed(error)
-    Rails.logger.error("Error sending message to cloud controller node id: #{@cloud_connector_id} #{error}")
+    Rails.logger.error("Error sending message to cloud controller: #{@cc_url}, node id: #{@cloud_connector_id} #{error}")
     @task.update_attributes(:state => "completed", :status => "error", :output => {'errors' => ["#{error}"]} )
   end
 
