@@ -63,7 +63,7 @@ objects:
         - name: CATALOG_INVENTORY_INTERNAL_URL
           value: ${CATALOG_INVENTORY_SCHEME}://${CATALOG_INVENTORY_HOST}:${CATALOG_INVENTORY_PORT}
         - name: CATALOG_INVENTORY_EXTERNAL_URL
-          value: https://${CATALOG_INVENTORY_EXTERNAL_HOST}/api/catalog-inventory
+          value: https://cert.${CATALOG_INVENTORY_EXTERNAL_HOST}/api/catalog-inventory # Temp to add cert here
         - name: RAILS_LOG_LEVEL
           value: ${LOG_LEVEL}
         - name: CLOWDER_ENABLED
