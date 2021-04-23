@@ -37,8 +37,6 @@ class ClowderConfig
         options["databasePassword"] = config.database.password
 
         options["SOURCES_URL"] = exists("SOURCES_URL", options["endpoints"]["sources-api"])
-        options["UPLOAD_URL"] = exists("UPLOAD_URL", options["endpoints"]["ingress-service"])
-        options["UPLOAD_URL"] = "#{options["UPLOAD_URL"]}/api/ingress/v1/upload" if options["UPLOAD_URL"].present?
         options["CATALOG_INVENTORY_INTERNAL_URL"] = options["endpoints"]["catalog-inventory-api"]
       else
         options["webPorts"] = 3000
@@ -56,7 +54,6 @@ class ClowderConfig
         options["databasePassword"] = ENV['DATABASE_PASSWORD']
 
         options["SOURCES_URL"] = exists("SOURCES_URL", ENV["SOURCES_URL"])
-        options["UPLOAD_URL"] = exists("UPLOAD_URL", ENV["UPLOAD_URL"])
         options["CATALOG_INVENTORY_INTERNAL_URL"] = exists("CATALOG_INVENTORY_INTERNAL_URL", ENV["CATALOG_INVENTORY_INTERNAL_URL"])
       end
 
@@ -66,6 +63,7 @@ class ClowderConfig
 
       # TODO: update with valid url later
       options["CLOUD_CONNECTOR_URL"] = ENV["CLOUD_CONNECTOR_URL"] 
+      options["UPLOAD_URL"] = ENV["UPLOAD_URL"]
       options["SOURCES_URL"] ||= ENV["SOURCES_URL"] 
 
       options["CATALOG_INVENTORY_EXTERNAL_URL"] = ENV["CATALOG_INVENTORY_EXTERNAL_URL"] || "Not Specified"
