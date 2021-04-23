@@ -14,7 +14,7 @@ class CloudConnectorService
     @task_url = @options[:task_url]
     @cloud_connector_id = @options[:cloud_connector_id]
     @cloud_connector_url = @options[:cloud_connector_url]
-    @cc_url = File.join(@cloud_connector_url, API_VERSION, "message")
+    @cc_url = File.join(@cloud_connector_url, "api", "cloud-connector", API_VERSION, "message")
     @task = Task.find(@task_id)
   end
 
