@@ -65,7 +65,7 @@ objects:
         - name: CATALOG_INVENTORY_EXTERNAL_URL
           value: https://cert.${CATALOG_INVENTORY_EXTERNAL_HOST}/api/catalog-inventory # Temp to add cert here
         - name: UPLOAD_URL
-          value: https://cert.${CATALOG_INGRESS_EXTERNAL_HOST}/api/ingress/v1/upload
+          value: https://cert.${CATALOG_INVENTORY_EXTERNAL_HOST}/api/ingress/v1/upload
         - name: RAILS_LOG_LEVEL
           value: ${LOG_LEVEL}
         - name: CLOWDER_ENABLED
@@ -242,7 +242,7 @@ parameters:
   displayName: Internal Catalog Inventory Service Port
   name: CATALOG_INVENTORY_PORT
   required: true
-  value: '8000'
+  value: '8080'
 - description: Scheme to use for the internal Catalog Inventory service URL. Can be either http or https
   displayName: Internal Catalog Inventory Service Scheme
   name: CATALOG_INVENTORY_SCHEME
@@ -255,8 +255,4 @@ parameters:
 - description: Host to use for the external Catalog Inventory service URL.
   displayName: External Catalog Inventory Service URL
   name: CATALOG_INVENTORY_EXTERNAL_HOST
-  value: cloud.stage.redhat.com
-- description: Host to use for the external Ingress service URL.
-  displayName: External Ingress Service URL
-  name: CATALOG_INGRESS_EXTERNAL_HOST
   value: cloud.stage.redhat.com
