@@ -30,7 +30,7 @@ objects:
   spec:
     envName: ${ENV_NAME}
     deployments:
-    - name: api
+    - name: api-v2
       minReplicas: ${{MIN_REPLICAS}}
       webServices:
         public:
@@ -147,7 +147,7 @@ objects:
     name: catalog-inventory-api
     labels:
       app: catalog-inventory-api
-      pod: catalog-inventory-api
+      pod: catalog-inventory-api-v2
   spec:
     ports:
     - port: 8080
@@ -155,7 +155,7 @@ objects:
       targetPort: 8000
       name: weblegacy
     selector:
-      pod: catalog-inventory-api
+      pod: catalog-inventory-api-v2
 
 parameters:
 - name: CURRENT_API_VERSION
