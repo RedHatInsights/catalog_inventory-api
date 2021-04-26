@@ -37,7 +37,7 @@ class ClowderConfig
         options["databasePassword"] = config.database.password
 
         options["SOURCES_URL"] = exists("SOURCES_URL", options["endpoints"]["sources-api-svc"])
-        options["CATALOG_INVENTORY_INTERNAL_URL"] = options["endpoints"]["catalog-inventory-api-v2"]
+        options["CATALOG_INVENTORY_INTERNAL_URL"] = options["endpoints"]["catalog-inventory-api"]
       else
         options["webPorts"] = 3000
         options["metricsPort"] = 8080
