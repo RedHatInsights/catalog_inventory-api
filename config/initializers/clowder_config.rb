@@ -26,10 +26,6 @@ class ClowderConfig
             endpoints["#{endpoint.app}-#{endpoint.name}"] = "http://#{endpoint.hostname}:#{endpoint.port}"
           end
         end
-        options["logGroup"] = config.logging.cloudwatch.logGroup
-        options["awsRegion"] = config.logging.cloudwatch.region
-        options["awsAccessKeyId"] = config.logging.cloudwatch.accessKeyId
-        options["awsSecretAccessKey"] = config.logging.cloudwatch.secretAccessKey
         options["databaseHostname"] = config.database.hostname
         options["databasePort"] = config.database.port
         options["databaseName"] = config.database.name
@@ -43,10 +39,6 @@ class ClowderConfig
         options["metricsPort"] = 8080
         options["kafkaBrokers"] = ["#{ENV['QUEUE_HOST']}:#{ENV['QUEUE_PORT']}"]
         options["kafkaTopics"] = {}
-        options["logGroup"] = "platform-dev"
-        options["awsRegion"] = "us-east-1"
-        options["awsAccessKeyId"] = ENV['CW_AWS_ACCESS_KEY_ID']
-        options["awsSecretAccessKey"] = ENV['CW_AWS_SECRET_ACCESS_KEY']
         options["databaseHostname"] = ENV['DATABASE_HOST']
         options["databaseName"] = ENV['DATABASE_NAME']
         options["databasePort"] = ENV['DATABASE_PORT']
@@ -91,7 +83,3 @@ end
 # ManageIQ Message Client depends on these variables
 ENV["QUEUE_HOST"] = ClowderConfig.queue_host
 ENV["QUEUE_PORT"] = ClowderConfig.queue_port
-
-# ManageIQ Logger depends on these variables
-ENV['CW_AWS_ACCESS_KEY_ID'] = ClowderConfig.instance["awsAccessKeyId"]
-ENV['CW_AWS_SECRET_ACCESS_KEY'] = ClowderConfig.instance["awsSecretAccessKey"]
