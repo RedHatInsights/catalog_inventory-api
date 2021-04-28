@@ -39,8 +39,7 @@ RSpec.describe("v1.0 - Task") do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)["data"].count).to eq(2)
 
-      expect(JSON.parse(response.body)["data"].first["type"]).to eq("FullRefreshPersisterTask")
-      expect(JSON.parse(response.body)["data"].second["type"]).to eq("FullRefreshUploadTask")
+      expect(JSON.parse(response.body)["data"].map { |x| x["type"] }).to match_array(["FullRefreshPersisterTask", "FullRefreshUploadTask"])
     end
   end
 end

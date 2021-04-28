@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         resources :service_offering_nodes, :only => [:index]
         resources :service_offerings,      :only => [:index]
         resources :service_plans,          :only => [:index]
+        resources :tasks,                  :only => [:index]
       end
       patch '/sources/:source_id/refresh', :to => "sources#refresh", :as => 'refresh'
 
