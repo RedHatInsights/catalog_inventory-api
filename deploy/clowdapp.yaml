@@ -160,7 +160,7 @@ parameters:
   name: MEMORY_LIMIT
   value: 512Mi
 - name: MIN_REPLICAS
-  value: '1'
+  value: '3'
 - description: Image tag
   name: IMAGE_TAG
   required: true
