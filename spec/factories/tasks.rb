@@ -4,5 +4,6 @@ FactoryBot.define do
 
     state { :pending }
     status { :ok }
+    owner { "Fred" }
   end
 end

@@ -2,7 +2,7 @@ describe Task do
   include ::Spec::Support::TenantIdentity
 
   let(:source) { Source.create!(:name => "source", :tenant => tenant) }
-  let!(:task) { Task.create!(:name => "task", :tenant => tenant, :source => source, :status => "ok", :state => state) }
+  let!(:task) { Task.create!(:name => "task", :tenant => tenant, :source => source, :status => "ok", :state => state, :owner => "William") }
   let(:time_interval) { ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 }
 
   describe "#timed_out" do

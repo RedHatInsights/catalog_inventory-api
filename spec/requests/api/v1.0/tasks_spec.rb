@@ -7,10 +7,11 @@ RSpec.describe("v1.0 - Task") do
 
   let(:attributes) do
     {
-      "name"               => "name",
-      "state"              => "pending",
-      "status"             => "ok",
-      "tenant_id"          => tenant.id.to_s
+      "name"      => "name",
+      "state"     => "pending",
+      "status"    => "ok",
+      "owner"     => "William",
+      "tenant_id" => tenant.id.to_s
     }
   end
 
@@ -22,15 +23,22 @@ RSpec.describe("v1.0 - Task") do
 
   context 'GET /tasks' do
     around do |example|
-      with_modified_env(:CATALOG_INVENTORY_INTERNAL_URL => "http://inventory.example.com") do
-        example.call
+      Insights::API::Common::Request.with_request(default_request) do
+        with_modified_env(:CATALOG_INVENTORY_INTERNAL_URL => "http://inventory.example.com") do
+          example.call
+        end
       end
     end
 
     before do
       source = Source.create!(:name => "foo", :tenant => tenant)
-      FullRefreshUploadTask.create!(:tenant => tenant, :source => source, :state => "pending", :status => "ok")
-      FullRefreshPersisterTask.create!(:tenant => tenant, :source => source, :state => "pending", :status => "ok")
+      @upload_task = FullRefreshUploadTask.create!(:tenant => tenant, :source => source, :state => "pending", :status => "ok")
+      @persister_task = FullRefreshPersisterTask.create!(:tenant => tenant, :source => source, :state => "pending", :status => "ok")
+    end
+
+    it "with owner" do
+      expect(@upload_task.owner).to eq('jdoe')
+      expect(@persister_task.owner).to eq('jdoe')
     end
 
     it "list all tasks" do

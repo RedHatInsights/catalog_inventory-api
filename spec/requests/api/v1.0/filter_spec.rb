@@ -10,6 +10,7 @@ RSpec.describe("::Insights::API::Common::Filter") do
         :state  => "pending",
         :status => "ok",
         :tenant => tenant,
+        :owner  => "William",
       )
     )
   end
