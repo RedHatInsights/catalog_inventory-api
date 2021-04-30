@@ -11,7 +11,6 @@ class Source < ApplicationRecord
   has_many :service_credentials, :dependent => :destroy
   has_many :service_offerings, :dependent => :destroy
   has_many :service_offering_nodes, :dependent => :destroy
-  has_many :service_offering_icons, :dependent => :destroy
   has_many :service_offering_service_credentials, :through => :service_offerings
   has_many :service_offering_node_service_credentials, :through => :service_offering_nodes
   has_many :service_offering_tags, :through => :service_offerings

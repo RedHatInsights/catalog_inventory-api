@@ -26,14 +26,8 @@ Rails.application.routes.draw do
       resources :service_credential_types, :only => [:index, :show]
 
       resources :service_instances, :only => [:index, :show]
-      resources :service_offering_icons,  :only => [:index, :show] do
-        get "icon_data", :to => "service_offering_icons#icon_data"
-      end
-
       resources :service_inventories, :only => [:index, :show], :concerns => [:taggable]
-
       resources :service_offering_nodes, :only => [:index, :show]
-
       resources :service_offerings, :only => [:index, :show] do
         post "applied_inventories_tags", :to => "service_offerings#applied_inventories_tags"
         post "order", :to => "service_offerings#order"
