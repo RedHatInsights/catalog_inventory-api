@@ -17,6 +17,7 @@ class ApplicationController < ActionController::API
   def with_current_request
     Insights::API::Common::Request.with_request(request) do |current|
       begin
+        Rails.logger.info("Headers: #{current.forwardable}")
         if current.required_auth?
           raise Insights::API::Common::EntitlementError unless request_is_entitled?(current.entitlement)
 
