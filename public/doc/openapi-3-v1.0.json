@@ -490,110 +490,6 @@
         }
       }
     },
-    "/service_offering_icons": {
-      "get": {
-        "tags": [
-          "ServiceOfferingIcon"
-        ],
-        "summary": "List ServiceOfferingIcons",
-        "operationId": "listServiceOfferingIcons",
-        "description": "Returns an array of ServiceOfferingIcon objects",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/QueryLimit"
-          },
-          {
-            "$ref": "#/components/parameters/QueryOffset"
-          },
-          {
-            "$ref": "#/components/parameters/QueryFilter"
-          },
-          {
-            "$ref": "#/components/parameters/QuerySortBy"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ServiceOfferingIcons collection",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceOfferingIconsCollection"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/service_offering_icons/{id}": {
-      "get": {
-        "tags": [
-          "ServiceOfferingIcon"
-        ],
-        "summary": "Show an existing ServiceOfferingIcon",
-        "operationId": "showServiceOfferingIcon",
-        "description": "Returns a ServiceOfferingIcon object",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ServiceOfferingIcon info",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceOfferingIcon"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorNotFound"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/service_offering_icons/{id}/icon_data": {
-      "get": {
-        "tags": [
-          "ServiceOfferingIcon"
-        ],
-        "summary": "Show an existing ServiceOfferingIcon IconData",
-        "operationId": "showServiceOfferingIconIconData",
-        "description": "Returns a ServiceOfferingIcon IconData",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ServiceOfferingIcon IconData",
-            "content": {
-              "image/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      }
-    },
     "/service_offering_nodes": {
       "get": {
         "tags": [
@@ -2319,9 +2215,6 @@
             "$ref": "#/components/schemas/ID"
           },
           "service_inventory_id": {
-            "$ref": "#/components/schemas/ID"
-          },
-          "service_offering_icon_id": {
             "$ref": "#/components/schemas/ID"
           },
           "source_created_at": {

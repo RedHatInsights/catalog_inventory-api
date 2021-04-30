@@ -8,7 +8,6 @@ class Tenant < ApplicationRecord
   has_many :service_offering_service_credentials
   has_many :service_offering_nodes
   has_many :service_offering_node_service_credentials
-  has_many :service_offering_icons
   has_many :service_plans
   has_many :sources
   has_many :tags

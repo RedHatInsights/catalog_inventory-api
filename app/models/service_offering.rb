@@ -5,7 +5,6 @@ class ServiceOffering < ApplicationRecord
 
   belongs_to :tenant
   belongs_to :source
-  belongs_to :service_offering_icon, :optional => true
   belongs_to :service_inventory, :optional => true
 
   has_many   :service_instances

@@ -1,18 +1,16 @@
 describe LaunchJobTaskService do
   include ::Spec::Support::TenantIdentity
 
-  let(:extra) { { "type" => "workflow_job_template" } }
+  let(:extra) { {"type" => "workflow_job_template"} }
   let(:service_offering) do
-    FactoryBot.create(:service_offering, :tenant                => tenant,
-                                         :source_ref            => '10',
-                                         :extra                 => extra,
-                                         :source_id             => source.id,
-                                         :service_inventory     => service_inventory,
-                                         :service_offering_icon => service_offering_icon)
+    FactoryBot.create(:service_offering, :tenant            => tenant,
+                                         :source_ref        => '10',
+                                         :extra             => extra,
+                                         :source_id         => source.id,
+                                         :service_inventory => service_inventory)
   end
   let(:source) { FactoryBot.create(:source, :tenant => tenant) }
   let(:service_inventory) { FactoryBot.create(:service_inventory, :tenant => tenant, :source_ref => '10') }
-  let(:service_offering_icon) { FactoryBot.create(:service_offering_icon, :tenant => tenant, :source => source, :source_ref => '10') }
 
   let(:params) { {'service_offering_id' => service_offering.id} }
   let(:subject) { described_class.new(params) }

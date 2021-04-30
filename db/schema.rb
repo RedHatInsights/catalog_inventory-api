@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_12_135412) do
+ActiveRecord::Schema.define(version: 2021_04_30_131022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -131,20 +131,6 @@ ActiveRecord::Schema.define(version: 2021_04_12_135412) do
     t.index ["tenant_id"], name: "index_service_inventory_tags_on_tenant_id"
   end
 
-  create_table "service_offering_icons", force: :cascade do |t|
-    t.bigint "tenant_id", null: false
-    t.bigint "source_id", null: false
-    t.string "source_ref", null: false
-    t.binary "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "archived_at"
-    t.datetime "last_seen_at"
-    t.index ["archived_at"], name: "index_service_offering_icons_on_archived_at"
-    t.index ["last_seen_at"], name: "index_service_offering_icons_on_last_seen_at"
-    t.index ["tenant_id"], name: "index_service_offering_icons_on_tenant_id"
-  end
-
   create_table "service_offering_node_service_credentials", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.bigint "service_credential_id", null: false
@@ -224,13 +210,11 @@ ActiveRecord::Schema.define(version: 2021_04_12_135412) do
     t.text "long_description"
     t.string "distributor"
     t.string "support_url"
-    t.bigint "service_offering_icon_id"
     t.bigint "service_inventory_id"
     t.datetime "source_updated_at"
     t.index ["archived_at"], name: "index_service_offerings_on_archived_at"
     t.index ["last_seen_at"], name: "index_service_offerings_on_last_seen_at"
     t.index ["service_inventory_id"], name: "index_service_offerings_on_service_inventory_id"
-    t.index ["service_offering_icon_id"], name: "index_service_offerings_on_service_offering_icon_id"
     t.index ["source_deleted_at"], name: "index_service_offerings_on_source_deleted_at"
     t.index ["tenant_id"], name: "index_service_offerings_on_tenant_id"
   end
@@ -346,8 +330,6 @@ ActiveRecord::Schema.define(version: 2021_04_12_135412) do
   add_foreign_key "service_inventory_tags", "service_inventories", on_delete: :cascade
   add_foreign_key "service_inventory_tags", "tags", on_delete: :cascade
   add_foreign_key "service_inventory_tags", "tenants", on_delete: :cascade
-  add_foreign_key "service_offering_icons", "sources", on_delete: :cascade
-  add_foreign_key "service_offering_icons", "tenants", on_delete: :cascade
   add_foreign_key "service_offering_node_service_credentials", "service_credentials", on_delete: :cascade
   add_foreign_key "service_offering_node_service_credentials", "service_offering_nodes", on_delete: :cascade
   add_foreign_key "service_offering_node_service_credentials", "tenants", on_delete: :cascade
@@ -363,7 +345,6 @@ ActiveRecord::Schema.define(version: 2021_04_12_135412) do
   add_foreign_key "service_offering_tags", "tags", on_delete: :cascade
   add_foreign_key "service_offering_tags", "tenants", on_delete: :cascade
   add_foreign_key "service_offerings", "service_inventories", on_delete: :nullify
-  add_foreign_key "service_offerings", "service_offering_icons", on_delete: :nullify
   add_foreign_key "service_offerings", "sources", on_delete: :cascade
   add_foreign_key "service_offerings", "tenants", on_delete: :cascade
   add_foreign_key "service_plans", "sources", on_delete: :cascade
