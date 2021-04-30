@@ -16,6 +16,7 @@ RSpec.describe("v1.0 - Sources") do
       :service_offerings,
       :service_offering_nodes,
       :service_plans,
-    ],
+      :tasks
+    ]
   )
 end
