@@ -18,4 +18,8 @@ class CheckAvailabilityTask < CloudConnectorTask
     reload
     source.update!(:availability_message => "Message sent to RHC #{controller_message_id}") if status == 'ok'
   end
+
+  def set_owner
+    self.owner = 'system'
+  end
 end

@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  include OwnerField
+
   belongs_to :tenant
   belongs_to :source
 

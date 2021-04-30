@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_131022) do
+ActiveRecord::Schema.define(version: 2021_04_30_145850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -299,6 +299,7 @@ ActiveRecord::Schema.define(version: 2021_04_30_131022) do
     t.jsonb "forwardable_headers"
     t.string "child_task_id"
     t.string "controller_message_id"
+    t.string "owner"
     t.index ["archived_at"], name: "index_tasks_on_archived_at"
     t.index ["source_id"], name: "index_tasks_on_source_id"
     t.index ["target_source_ref", "target_type"], name: "index_tasks_on_target_source_ref_and_target_type"

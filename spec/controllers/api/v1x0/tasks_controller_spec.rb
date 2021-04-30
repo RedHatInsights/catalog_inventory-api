@@ -19,7 +19,7 @@ RSpec.describe Api::V1x0::TasksController, :type => :request do
   end
 
   it "patch /tasks/:id updates a Task" do
-    task = LaunchJobTask.create!(:state => "running", :status => "ok", :source => source, :tenant => tenant)
+    task = LaunchJobTask.create!(:state => "running", :status => "ok", :source => source, :tenant => tenant, :owner => "William")
     expect(client).to receive(:publish_topic).once
 
     patch(api_v1x0_task_url(task.id), :params => {:state => "completed", :status => "ok", :output => output}.to_json, :headers => headers)

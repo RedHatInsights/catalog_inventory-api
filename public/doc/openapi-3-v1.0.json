@@ -2760,6 +2760,11 @@
             "format": "date-time",
             "readOnly": true,
             "type": "string"
+          },
+          "owner": {
+            "type": "string",
+            "title": "Owner",
+            "example": "jdoe"
           }
         },
         "additionalProperties": false
