@@ -25,7 +25,7 @@ describe CheckAvailabilityTaskService do
         expect(task.input["upload_url"]).to be_nil
         expect(task.state).to eq('pending')
         expect(task.status).to eq('ok')
-        expect(task.owner).to eq('system')
+        expect(task.owner).to eq('jdoe')
       end
     end
 
