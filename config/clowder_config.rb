@@ -8,6 +8,10 @@ class ClowderConfig
     @instance ||= {}.tap do |options|
       if ClowderCommonRuby::Config.clowder_enabled?
         config = ClowderCommonRuby::Config.load
+        options["awsAccessKeyId"] = config.logging.cloudwatch.accessKeyId
+        options["awsRegion"] = config.logging.cloudwatch.region
+        options["awsSecretAccessKey"] = config.logging.cloudwatch.secretAccessKey
+        options["logGroup"] = config.logging.cloudwatch.logGroup
         options["webPorts"] = config.webPort
         options["metricsPort"] = config.metricsPort
         options["metricsPath"] = config.metricsPath
@@ -26,17 +30,16 @@ class ClowderConfig
             endpoints["#{endpoint.app}-#{endpoint.name}"] = "http://#{endpoint.hostname}:#{endpoint.port}"
           end
         end
-        options["databaseHostname"] = config.database.hostname
-        options["databasePort"] = config.database.port
-        options["databaseName"] = config.database.name
-        options["databaseUsername"] = config.database.username
-        options["databasePassword"] = config.database.password
 
         options["SOURCES_URL"] = exists("SOURCES_URL", options["endpoints"]["sources-api-svc"])
         options["CATALOG_INVENTORY_INTERNAL_URL"] = options["endpoints"]["catalog-inventory-api"]
       else
         options["webPorts"] = 3000
         options["metricsPort"] = 8080
+        options["awsAccessKeyId"] = ENV['CW_AWS_ACCESS_KEY_ID']
+        options["awsRegion"] = "us-east-1"
+        options["awsSecretAccessKey"] = ENV['CW_AWS_SECRET_ACCESS_KEY']
+        options["logGroup"] = "platform-dev"
         options["kafkaBrokers"] = ["#{ENV['QUEUE_HOST']}:#{ENV['QUEUE_PORT']}"]
         options["kafkaTopics"] = {}
         options["databaseHostname"] = ENV['DATABASE_HOST']
