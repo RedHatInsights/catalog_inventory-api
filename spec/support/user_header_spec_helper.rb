@@ -20,11 +20,11 @@ module UserHeaderSpecHelper
         "is_entitled" => true
       }
     },
-    "identity" => {
+    "identity"     => {
       "account_number" => "0369233",
       "type"           => "User",
       "auth_type"      => "basic-auth",
-      "user"           =>  {
+      "user"           => {
         "username"     => "jdoe",
         "email"        => "jdoe@acme.com",
         "first_name"   => "John",
@@ -37,6 +37,69 @@ module UserHeaderSpecHelper
       "internal"       => {
         "org_id"    => "3340851",
         "auth_time" => 6300
+      }
+    }
+  }.freeze
+
+  DEFAULT_CERT_USER = {
+    "identity"     => {
+      "internal"       => {
+        "auth_time"    => 0,
+        "cross_access" => false,
+        "org_id"       => "11789772"
+      },
+      "account_number" => "6089719",
+      "auth_type"      => "cert-auth",
+      "system"         => {
+        "cn"        => "8e564c08-3d46-476c-8fca-587863c5b48b",
+        "cert_type" => "system"
+      },
+      "type"           => "System"
+    },
+    "entitlements" => {
+      "insights"         => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "cost_management"  => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "migrations"       => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "rhel"             => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "user_preferences" => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "ansible"          => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "internal"         => {
+        "is_entitled" => false,
+        "is_trial"    => false
+      },
+      "openshift"        => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "smart_management" => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "subscriptions"    => {
+        "is_entitled" => true,
+        "is_trial"    => false
+      },
+      "settings"         => {
+        "is_entitled" => true,
+        "is_trial"    => false
       }
     }
   }.freeze
@@ -62,7 +125,7 @@ module UserHeaderSpecHelper
         "is_entitled" => true
       }
     },
-    "identity" => {
+    "identity"     => {
       "account_number" => "0369233",
       "type"           => "System",
       "auth_type"      => "cert-auth",
