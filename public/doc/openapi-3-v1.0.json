@@ -2764,6 +2764,7 @@
           "owner": {
             "type": "string",
             "title": "Owner",
+            "readOnly": true,
             "example": "jdoe"
           }
         },

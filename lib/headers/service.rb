@@ -16,10 +16,10 @@ module Headers
   module User
     ADMIN_USER ||= {
       "identity" => {
-        "account_number" => "DUMMY_USER",
+        "account_number" => "SYSTEM_USER",
         "type"           => "User",
         "user"           => {
-          "username"     => "dummy_user",
+          "username"     => "system",
           "email"        => "dummy_user@redhat.com",
           "first_name"   => "dummy",
           "last_name"    => "user",
@@ -64,7 +64,7 @@ module Headers
           "type"           => "User",
           "auth_type"      => "basic-auth",
           "user"           =>  {
-            "username"     => "jdoe",
+            "username"     => "system",
             "email"        => "jdoe@acme.com",
             "first_name"   => "John",
             "last_name"    => "Doe",

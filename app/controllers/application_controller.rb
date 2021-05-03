@@ -16,25 +16,26 @@ class ApplicationController < ActionController::API
 
   def with_current_request
     Insights::API::Common::Request.with_request(request) do |current|
-      begin
-        Rails.logger.info("Headers: #{current.forwardable}")
-        if current.required_auth?
-          raise Insights::API::Common::EntitlementError unless request_is_entitled?(current.entitlement)
+      Rails.logger.info("Headers: #{current.forwardable}") unless current.forwardable.empty?
 
-          tenant = Tenant.find_or_create_by(:external_tenant => current.tenant) if current.tenant
-          ActsAsTenant.with_tenant(tenant) { yield }
-        else
-          ActsAsTenant.without_tenant { yield }
-        end
-      rescue KeyError, Insights::API::Common::IdentityError => e
-        error_document = Insights::API::Common::ErrorDocument.new.add('401', 'Unauthorized')
-        Rails.logger.error("Request failed with identity error: #{e.message}")
-        render :json => error_document.to_h, :status => error_document.status
-      rescue Insights::API::Common::EntitlementError => e
-        error_document = Insights::API::Common::ErrorDocument.new.add('403', 'Forbidden')
-        Rails.logger.error("Request failed with entitlement error: #{e.message}")
-        render :json => error_document.to_h, :status => error_document.status
+      if current.required_auth?
+        raise Insights::API::Common::EntitlementError unless request_is_entitled?(current.entitlement)
+
+        tenant = Tenant.find_or_create_by(:external_tenant => current.tenant) if current.tenant
+        ActsAsTenant.with_tenant(tenant) { yield }
+      else
+        ActsAsTenant.without_tenant { yield }
       end
+    rescue KeyError, Insights::API::Common::IdentityError => e
+      error_document = Insights::API::Common::ErrorDocument.new.add('401', 'Unauthorized')
+      Rails.logger.error("Request failed with identity error: #{e.message}")
+
+      render :json => error_document.to_h, :status => error_document.status
+    rescue Insights::API::Common::EntitlementError => e
+      error_document = Insights::API::Common::ErrorDocument.new.add('403', 'Forbidden')
+      Rails.logger.error("Request failed with entitlement error: #{e.message}")
+
+      render :json => error_document.to_h, :status => error_document.status
     end
   end
 
