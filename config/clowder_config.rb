@@ -8,6 +8,10 @@ class ClowderConfig
     @instance ||= {}.tap do |options|
       if ClowderCommonRuby::Config.clowder_enabled?
         config = ClowderCommonRuby::Config.load
+        options["awsAccessKeyId"] = config.logging.cloudwatch.accessKeyId
+        options["awsRegion"] = config.logging.cloudwatch.region
+        options["awsSecretAccessKey"] = config.logging.cloudwatch.secretAccessKey
+        options["logGroup"] = config.logging.cloudwatch.logGroup
         options["webPorts"] = config.webPort
         options["metricsPort"] = config.metricsPort
         options["metricsPath"] = config.metricsPath
@@ -31,12 +35,18 @@ class ClowderConfig
         options["databaseName"] = config.database.name
         options["databaseUsername"] = config.database.username
         options["databasePassword"] = config.database.password
+        options["sslMode"] = config.database.sslMode
+        options["rdsCa"] = config.database.rdsCa
 
         options["SOURCES_URL"] = exists("SOURCES_URL", options["endpoints"]["sources-api-svc"])
         options["CATALOG_INVENTORY_INTERNAL_URL"] = options["endpoints"]["catalog-inventory-api"]
       else
         options["webPorts"] = 3000
         options["metricsPort"] = 8080
+        options["awsAccessKeyId"] = ENV['CW_AWS_ACCESS_KEY_ID']
+        options["awsRegion"] = "us-east-1"
+        options["awsSecretAccessKey"] = ENV['CW_AWS_SECRET_ACCESS_KEY']
+        options["logGroup"] = "platform-dev"
         options["kafkaBrokers"] = ["#{ENV['QUEUE_HOST']}:#{ENV['QUEUE_PORT']}"]
         options["kafkaTopics"] = {}
         options["databaseHostname"] = ENV['DATABASE_HOST']
@@ -83,3 +93,20 @@ end
 # ManageIQ Message Client depends on these variables
 ENV["QUEUE_HOST"] = ClowderConfig.queue_host
 ENV["QUEUE_PORT"] = ClowderConfig.queue_port
+
+ENV["DATABASE_USER"] = ClowderConfig.instance["databaseUsername"]
+ENV["DATABASE_PASSWORD"] = ClowderConfig.instance["databasePassword"]
+ENV["DATABASE_NAME"] = ClowderConfig.instance["databaseName"]
+ENV["DATABASE_HOST"] = ClowderConfig.instance["databaseHostname"]
+ENV["DATABASE_PORT"] = ClowderConfig.instance["databasePort"]
+ENV["CW_AWS_ACCESS_KEY_ID"] = ClowderConfig.instance["awsAccessKeyId"]
+ENV["CW_AWS_SECRET_ACCESS_KEY"] = ClowderConfig.instance["awsSecretAccessKey"]
+ENV["CW_AWS_REGION"] = ClowderConfig.instance["awsRegion"]
+ENV["CLOUD_WATCH_LOG_GROUP"] = ClowderConfig.instance["logGroup"]
+ENV["RAILS_PORT"] = ClowderConfig.instance["webPorts"].to_s
+ENV["RDSCA"] = ClowderConfig.instance["rdsCa"]
+
+if ClowderConfig.instance["rdsCa"].present?
+  ENV["PGSSLROOTCERT"] = "/opt/rdsca.crt"
+  File.write("/opt/rdsca.crt", ClowderConfig.instance["rdsCa"])
+end

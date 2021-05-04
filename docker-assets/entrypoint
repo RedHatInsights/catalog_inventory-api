@@ -5,31 +5,12 @@ function urlescape() {
 }
 
 if [[ ! -z "${ACG_CONFIG}" ]]; then
-  export DATABASE_HOST=`jq -r '.database.hostname' ${ACG_CONFIG}`
-  export DATABASE_PORT=`jq -r '.database.port' ${ACG_CONFIG}`
-  DATABASE_USER=`jq -r '.database.username' ${ACG_CONFIG}`
-  DATABASE_PASSWORD=`jq -r '.database.password' ${ACG_CONFIG}`
-  DATABASE_NAME=`jq -r '.database.name' ${ACG_CONFIG}`
-
-  export CW_AWS_ACCESS_KEY_ID=`jq -r '.logging.cloudwatch.accessKeyId' ${ACG_CONFIG}`
-  export CW_AWS_SECRET_ACCESS_KEY=`jq -r '.logging.cloudwatch.secretAccessKey' ${ACG_CONFIG}`
-  export CW_AWS_REGION=`jq -r '.logging.cloudwatch.region' ${ACG_CONFIG}`
-  export CLOUD_WATCH_LOG_GROUP=`jq -r '.logging.cloudwatch.logGroup' ${ACG_CONFIG}`
-  export RAILS_PORT=`jq -r '.webPort' ${ACG_CONFIG}`
-
-  export PGSSLMODE=`jq -r '.database.sslMode' ${ACG_CONFIG}`
-  if [[ $PGSSLMODE = "null" ]]; then
-    unset PGSSLMODE
-  fi
-
-  certString=`jq -r '.database.rdsCa' ${ACG_CONFIG}`
-  if [[ $certString != "null" ]]; then
-    certPath="/opt/rdsca.crt"
-    echo "RDS Cert Path: $certPath"
-    echo "$certString" > $certPath
-
-    export PGSSLROOTCERT=$certPath
-  fi
+  echo $DATABASE_HOST
+  echo $DATABASE_PORT
+  echo $DATABASE_USER
+  echo $DATABASE_NAME
+  echo $RAILS_PORT
+  echo $PGSSLMODE
 else
   export RAILS_PORT=3000
   DATABASE_NAME=catalog_inventory_production
