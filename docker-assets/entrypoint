@@ -5,12 +5,12 @@ function urlescape() {
 }
 
 if [[ ! -z "${ACG_CONFIG}" ]]; then
-  echo $DATABASE_HOST
-  echo $DATABASE_PORT
-  echo $DATABASE_USER
-  echo $DATABASE_NAME
-  echo $RAILS_PORT
-  echo $PGSSLMODE
+  echo "DATABASE_HOST=$DATABASE_HOST"
+  echo "DATABASE_PORT=$DATABASE_PORT"
+  echo "DATABASE_USER=$DATABASE_USER"
+  echo "DATABASE_NAME=$DATABASE_NAME"
+  echo "RAILS_PORT=$RAILS_PORT"
+  echo "PGSSLMODE=$PGSSLMODE"
 else
   export RAILS_PORT=3000
   DATABASE_NAME=catalog_inventory_production

@@ -25,7 +25,9 @@ function check_svc_status() {
 
 write_encryption_key
 
+echo "Checking svc status =="
+
 # Wait for postgres to be ready
-check_svc_status $DATABASE_HOST $DATABASE_PORT
+#check_svc_status $DATABASE_HOST $DATABASE_PORT
 
 bundle exec rake db:migrate && bundle exec rake db:seed && bundle exec rails server -p $RAILS_PORT
