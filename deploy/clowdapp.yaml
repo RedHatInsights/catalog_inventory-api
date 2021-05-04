@@ -140,7 +140,6 @@ objects:
       topicName: platform.catalog-inventory.task-output-stream
     dependencies:
     - ingress
-    - sources
     database:
       name: catalog-inventory
 
