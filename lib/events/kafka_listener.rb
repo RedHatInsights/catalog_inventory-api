@@ -49,7 +49,7 @@ module Events
       end
 
       unless insights_headers['x-rh-identity'] && insights_headers['x-rh-insights-request-id']
-        Rails.logger.error("message skipped because of missing required headers")
+        Rails.logger.debug("message skipped because of missing required headers")
         return
       end
 
