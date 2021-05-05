@@ -39,4 +39,28 @@ RSpec.describe Api::V1x0::SourcesController, :type => :request do
       end
     end
   end
+
+  describe "patch /sources/:id/incremental_refresh" do
+    context "when source is available" do
+      let(:status) { "available" }
+
+      it "call SourceRefreshService" do
+        expect(SourceRefreshService).to receive(:new).and_return(source_svc)
+        patch "/api/catalog-inventory/v1.0/sources/#{source.id}/incremental_refresh", :headers => headers
+        expect(response.status).to eq(204)
+      end
+    end
+
+    context "when source is unavailable" do
+      let(:status) { "unavailable" }
+
+      it "call CheckAvailabilityTaskService" do
+        expect(CheckAvailabilityTaskService).to receive(:new).and_return(check_svc)
+        expect(task).to receive(:dispatch)
+
+        patch "/api/catalog-inventory/v1.0/sources/#{source.id}/incremental_refresh", :headers => headers
+        expect(response.status).to eq(204)
+      end
+    end
+  end
 end

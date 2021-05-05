@@ -1,6 +1,7 @@
 class SourceRefreshService
-  def initialize(source)
+  def initialize(source, allow_incr_refresh = false)
     @source = source
+    @allow_incr_refresh = allow_incr_refresh
   end
 
   def process
@@ -58,14 +59,11 @@ class SourceRefreshService
   def create_refresh_upload_task
     opts = {:tenant_id => @source.tenant_id, :source_id => @source.id}
 
-    # Temp change to always start full refresh task
-    upload_task = FullRefreshUploadTaskService.new(opts).process.task
-
-    # upload_task = if @source.last_successful_refresh_at.present?
-    #                 IncrementalRefreshUploadTaskService.new(opts.merge!(:last_successful_refresh_at => @source.last_successful_refresh_at.iso8601)).process.task
-    #               else
-    #                 FullRefreshUploadTaskService.new(opts).process.task
-    #               end
+    upload_task = if @source.last_successful_refresh_at.present? && @allow_incr_refresh
+                    IncrementalRefreshUploadTaskService.new(opts.merge!(:last_successful_refresh_at => @source.last_successful_refresh_at.iso8601)).process.task
+                  else
+                    FullRefreshUploadTaskService.new(opts).process.task
+                  end
 
     upload_task.dispatch
   end
