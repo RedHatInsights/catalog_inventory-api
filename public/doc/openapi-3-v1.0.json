@@ -1048,6 +1048,35 @@
         }
       }
     },
+    "/sources/{id}/incremental_refresh": {
+      "patch": {
+        "tags": [
+          "Source"
+        ],
+        "summary": "Incremental Refresh an existing Source",
+        "operationId": "incrementalRefreshSource",
+        "description": "Incremental Refresh a source object",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Updated, no content"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    },
     "/sources/{id}/service_instances": {
       "get": {
         "tags": [
@@ -2746,6 +2775,11 @@
             "type": "string"
           },
           "controller_message_id": {
+            "format": "uuid",
+            "readOnly": true,
+            "type": "string"
+          },
+          "child_task_id": {
             "format": "uuid",
             "readOnly": true,
             "type": "string"
