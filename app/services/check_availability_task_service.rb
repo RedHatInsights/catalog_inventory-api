@@ -4,6 +4,8 @@ class CheckAvailabilityTaskService < TaskService
   def process
     raise "Source #{source_id} does not exist" unless @source
 
+    mark_timeout_if_needed
+
     refresh unless @source.ready_for_check?
 
     @task = CheckAvailabilityTask.create!(task_options)
@@ -12,6 +14,22 @@ class CheckAvailabilityTaskService < TaskService
   rescue => e
     Rails.logger.error("Failed to create task: #{e.message}")
     raise
+  end
+
+  def mark_timeout_if_needed
+    timed_out_tasks = CheckAvailabilityTask.where(:state => ['pending', 'running', 'queued'], :source_id => source_id, :tenant_id => tenant.id).select(&:timed_out?)
+
+    Rails.logger.info("#{timed_out_tasks.count} of check availabilitytasks are timed out") unless timed_out_tasks.count.zero?
+
+    timed_out_tasks.each do |task|
+      task.update!(:state => "timedout", :status => "error", :output => {"errors" => ["Task #{task.id} was timed out"]})
+      Source.update(source_id,
+                    :availability_status  => "unavailable",
+                    :last_checked_at      => task.created_at.iso8601,
+                    :availability_message => "Task #{task.id} was timed out")
+
+      Rails.logger.error("Task #{task.id} was timed out, source #{source_id} was unavailable")
+    end
   end
 
   private

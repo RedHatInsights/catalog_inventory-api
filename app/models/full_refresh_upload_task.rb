@@ -19,4 +19,9 @@ class FullRefreshUploadTask < CloudConnectorTask
       Rails.logger.info("Source #{source.id} set refresh task id to #{id}")
     end
   end
+
+  def timed_out?
+    time_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
+    state != 'completed' && created_at + time_interval < Time.current
+  end
 end

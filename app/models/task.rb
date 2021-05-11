@@ -17,7 +17,5 @@ class Task < ApplicationRecord
   end
 
   def timed_out?
-    time_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
-    state != 'completed' && created_at + time_interval < Time.current
   end
 end
