@@ -3,7 +3,7 @@ describe CheckAvailabilityTaskService do
 
   let(:params) { {'external_tenant' => tenant.external_tenant, 'source_id' => source.id} }
   let(:subject) { described_class.new(params) }
-  let(:time_interval) { ClowderConfig.instance["CHECK_AVAILABILITY_TIMEOUT"] * 60 }
+  let(:tolerance) { 10 }
 
   around do |example|
     Insights::API::Common::Request.with_request(default_request) { example.call }
@@ -14,15 +14,17 @@ describe CheckAvailabilityTaskService do
     let!(:check_task) { CheckAvailabilityTask.create!(:tenant => tenant, :source_id => source.id, :state => 'pending', :status => 'ok') }
 
     before do
-      allow(ClowderConfig).to receive(:instance).and_return({"SOURCES_URL" => "http://www.sources_url.com"})
-      allow(ClowderConfig).to receive(:instance).and_return({"CHECK_AVAILABILITY_TIMEOUT" => 10})
+      allow(ClowderConfig).to receive(:instance).and_return(
+        {"SOURCES_URL"                => "http://www.sources_url.com",
+         "CHECK_AVAILABILITY_TIMEOUT" => 10}
+      )
     end
 
     context "when has a pending CheckAvailabilityTask" do
       before { Timecop.safe_mode = true }
 
       it "should mark the task timed out" do
-        Timecop.travel(Time.current + time_interval) do
+        Timecop.travel(Time.current + CheckAvailabilityTask.timeout_interval + tolerance) do
           subject.mark_timeout_if_needed
 
           check_task.reload
@@ -46,7 +48,10 @@ describe CheckAvailabilityTaskService do
 
   describe "#process" do
     before do
-      allow(ClowderConfig).to receive(:instance).and_return({"SOURCES_URL" => "http://www.sources_url.com"})
+      allow(ClowderConfig).to receive(:instance).and_return(
+        {"SOURCES_URL"                => "http://www.sources_url.com",
+         "CHECK_AVAILABILITY_TIMEOUT" => 10}
+      )
     end
 
     context "when source is ready for availability check" do
@@ -57,7 +62,7 @@ describe CheckAvailabilityTaskService do
 
         expect(task.type).to eq('CheckAvailabilityTask')
         expect(task.input["response_format"]).to eq('json')
-        expect(task.input["jobs"]).to eq([{"apply_filter"=>{"version"=>"version"}, "href_slug"=>"api/v2/config/", "method"=>"get"}])
+        expect(task.input["jobs"]).to eq([{"apply_filter" => {"version"=>"version"}, "href_slug" => "api/v2/config/", "method" => "get"}])
         expect(task.input["upload_url"]).to be_nil
         expect(task.state).to eq('pending')
         expect(task.status).to eq('ok')
@@ -68,16 +73,20 @@ describe CheckAvailabilityTaskService do
     context "when source is only enabled" do
       let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => true) }
 
+      before { allow(Sources::Service).to receive(:call).and_return([]) }
+
       it "raises an error" do
-        expect{ subject.process.task }.to raise_error(StandardError, /not ready for availability_check!/)
+        expect { subject.process.task }.to raise_error(StandardError, /not ready for availability_check!/)
       end
     end
 
     context "when source is disabled" do
       let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => false) }
 
+      before { allow(Sources::Service).to receive(:call).and_return([]) }
+
       it "raises an error" do
-        expect{ subject.process.task }.to raise_error(StandardError, /not ready for availability_check!/)
+        expect { subject.process.task }.to raise_error(StandardError, /not ready for availability_check!/)
       end
     end
   end

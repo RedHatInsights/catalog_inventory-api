@@ -1,6 +1,8 @@
 class FullRefreshUploadTask < CloudConnectorTask
   after_update :post_upload_task, :if => proc { state == 'completed' && (status == 'unchanged' || status == 'error') }
 
+  @timeout_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
+
   def post_upload_task
     PostUploadTaskService.new(service_options).process
   end
@@ -18,10 +20,5 @@ class FullRefreshUploadTask < CloudConnectorTask
 
       Rails.logger.info("Source #{source.id} set refresh task id to #{id}")
     end
-  end
-
-  def timed_out?
-    time_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
-    state != 'completed' && created_at + time_interval < Time.current
   end
 end

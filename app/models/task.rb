@@ -9,13 +9,20 @@ class Task < ApplicationRecord
 
   acts_as_tenant(:tenant)
 
+  @timeout_interval = 120 * 60 # 2 hours
+
+  def self.timeout_interval
+    @timeout_interval
+  end
+
+  def timed_out?
+    ['pending', 'queued', 'running'].include?(state) && created_at + self.class.timeout_interval < Time.current
+  end
+
   def service_options
     {:tenant_id => tenant.id, :source_id => source.id, :task => self}
   end
 
   def dispatch
-  end
-
-  def timed_out?
   end
 end

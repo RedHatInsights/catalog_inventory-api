@@ -2,8 +2,17 @@ describe CheckAvailabilityTask do
   include ::Spec::Support::TenantIdentity
 
   let(:source) { Source.create!(:name => "source", :tenant => tenant) }
-  let!(:task) { CheckAvailabilityTask.create!(:name => "task", :tenant => tenant, :source => source, :status => "ok", :state => state, :owner => "William") }
-  let(:time_interval) { ClowderConfig.instance["CHECK_AVAILABILITY_TIMEOUT"] * 60 }
+  let!(:task) do
+    CheckAvailabilityTask.create!(
+      :name   => "task",
+      :tenant => tenant,
+      :source => source,
+      :status => "ok",
+      :state  => state,
+      :owner  => "William"
+    )
+  end
+  let(:tolerance) { 60 }
 
   around do |example|
     Insights::API::Common::Request.with_request(default_request) { example.call }
@@ -40,7 +49,7 @@ describe CheckAvailabilityTask do
       end
 
       it "returns false" do
-        Timecop.travel(Time.current + time_interval) do
+        Timecop.travel(Time.current + CheckAvailabilityTask.timeout_interval + tolerance) do
           expect(task.timed_out?).to be_falsey
         end
       end
@@ -50,13 +59,13 @@ describe CheckAvailabilityTask do
       let(:state) { "running" }
 
       it "returns true" do
-        Timecop.travel(Time.current + time_interval) do
+        Timecop.travel(Time.current + CheckAvailabilityTask.timeout_interval + tolerance) do
           expect(task.timed_out?).to be_truthy
         end
       end
 
       it "returns false" do
-        Timecop.travel(Time.current + 60) do
+        Timecop.travel(Time.current + CheckAvailabilityTask.timeout_interval - tolerance) do
           expect(task.timed_out?).to be_falsey
         end
       end

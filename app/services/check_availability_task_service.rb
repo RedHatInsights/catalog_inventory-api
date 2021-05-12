@@ -19,7 +19,7 @@ class CheckAvailabilityTaskService < TaskService
   def mark_timeout_if_needed
     timed_out_tasks = CheckAvailabilityTask.where(:state => ['pending', 'running', 'queued'], :source_id => source_id, :tenant_id => tenant.id).select(&:timed_out?)
 
-    Rails.logger.info("#{timed_out_tasks.count} of check availabilitytasks are timed out") unless timed_out_tasks.count.zero?
+    Rails.logger.info("#{timed_out_tasks.count} of check availabilitytasks are timed out") unless timed_out_tasks.empty?
 
     timed_out_tasks.each do |task|
       task.update!(:state => "timedout", :status => "error", :output => {"errors" => ["Task #{task.id} was timed out"]})
