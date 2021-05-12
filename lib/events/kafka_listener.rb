@@ -54,18 +54,18 @@ module Events
       end
 
       Insights::API::Common::Request.with_request(:headers => insights_headers, :original_url => nil) do |req|
-        tenant = Tenant.find_or_create_by(:external_tenant => req.tenant)
-        if tenant
-          Rails.logger.debug("Tenant in KafkaListener: #{tenant.inspect}")
-          Rails.logger.debug("Headers in KafkaListener: #{insights_headers}")
+        ActiveRecord::Base.connection_pool.with_connection do
+          tenant = Tenant.find_or_create_by(:external_tenant => req.tenant)
+          if tenant
+            Rails.logger.debug("Tenant in KafkaListener: #{tenant.inspect}")
+            Rails.logger.debug("Headers in KafkaListener: #{insights_headers}")
 
-          ActsAsTenant.with_tenant(tenant) do
-            ActiveRecord::Base.connection_pool.with_connection do
+            ActsAsTenant.with_tenant(tenant) do            
               process_event(event)
             end
+          else
+            Rails.logger.error("Message skipped because it does not belong to a valid tenant")
           end
-        else
-          Rails.logger.error("Message skipped because it does not belong to a valid tenant")
         end
       end
     rescue => e
