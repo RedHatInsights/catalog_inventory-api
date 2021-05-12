@@ -40,7 +40,7 @@ module Events
           # check availability from source doesn't have headers
           insights_headers['x-rh-insights-request-id'] = "scheduled_task_#{Time.now.utc.to_s.tr(' ', '_')}"
           insights_headers['x-rh-identity'] = Headers::Service.x_rh_identity_tenant_user(event.payload["params"]["external_tenant"])
-        else
+        elsif event.payload.instance_of?(String)
           # ingress doesn't have any header
           header_hash = JSON.parse(event.payload)
           insights_headers['x-rh-insights-request-id'] = header_hash["request_id"]
