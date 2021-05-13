@@ -10,7 +10,10 @@ describe IncrementalRefreshUploadTaskService do
 
   describe "#process" do
     before do
-      allow(ClowderConfig).to receive(:instance).and_return({"UPLOAD_URL" => "http://www.upload_url.com"})
+      allow(ClowderConfig).to receive(:instance).and_return(
+        {"UPLOAD_URL"             => "http://www.upload_url.com",
+         "SOURCE_REFRESH_TIMEOUT" => 10}
+      )
     end
 
     context "source has no sha and size" do

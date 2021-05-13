@@ -1,6 +1,8 @@
 class IncrementalRefreshUploadTask < CloudConnectorTask
   after_update :post_upload_task, :if => proc { state == 'completed' && (status == 'unchanged' || status == 'error') }
 
+  @timeout_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
+
   def post_upload_task
     PostUploadTaskService.new(service_options).process
   end
