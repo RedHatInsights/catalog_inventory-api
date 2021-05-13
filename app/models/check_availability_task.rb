@@ -1,6 +1,6 @@
 class CheckAvailabilityTask < CloudConnectorTask
   before_update :prevent_update, :if => proc { state_changed?(:from => 'timedout', :to => 'completed') }
-  after_update :post_check_availability_task, :if => proc { state == 'completed' }
+  after_commit :post_check_availability_task, :if => proc { state == 'completed' }
 
   @timeout_interval = ClowderConfig.instance["CHECK_AVAILABILITY_TIMEOUT"] * 60 # in seconds
 

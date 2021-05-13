@@ -36,13 +36,29 @@ describe CheckAvailabilityTask do
         expect(task.state).to eq("completed")
       end
     end
+
+    context "when post_check_availability_task raises an exception" do
+      let(:state) { "running" }
+
+      before do
+        allow(PostCheckAvailabilityTaskService).to receive(:new).and_raise(RuntimeError)
+      end
+
+      it "should update state" do
+        expect { task.update(:state => "completed") }.to raise_error(RuntimeError)
+
+        task.reload
+
+        expect(task.state).to eq("completed")
+      end
+    end
   end
 
   describe "#timed_out" do
     before { Timecop.safe_mode = true }
 
-    context "when task is completed" do
-      let(:state) { "completed" }
+    context "when task is timed out" do
+      let(:state) { "timedout" }
 
       it "returns false" do
         expect(task.timed_out?).to be_falsey
