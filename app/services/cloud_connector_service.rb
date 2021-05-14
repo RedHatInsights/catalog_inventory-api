@@ -59,8 +59,9 @@ class CloudConnectorService
   end
 
   def task_failed(error)
-    Rails.logger.error("Error sending message to cloud controller: #{@cc_url}, node id: #{@cloud_connector_id} #{error}")
-    @task.update_attributes(:state => "completed", :status => "error", :output => {'errors' => ["#{error}"]} )
+    error_msg = "Error sending message to cloud controller: #{@cc_url}, node id: #{@cloud_connector_id} #{error}"
+    Rails.logger.error(error_msg)
+    @task.update_attributes(:state => 'completed', :status => 'error', :output => {'errors' => [error_msg]} )
   end
 
   def validate_options
