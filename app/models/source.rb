@@ -1,5 +1,5 @@
 class Source < ApplicationRecord
-  after_update :dispatch_check_availability_task, :if => proc { source_ready? || application_ready? }
+  after_update_commit :dispatch_check_availability_task, :if => proc { source_ready? || application_ready? }
 
   attribute :uid, :string, :default => -> { SecureRandom.uuid }
 

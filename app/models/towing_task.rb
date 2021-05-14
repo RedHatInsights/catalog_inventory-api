@@ -1,5 +1,5 @@
 class TowingTask < LaunchJobTask
-  after_update :post_towing_task, :if => proc { state == 'completed' }
+  after_update_commit :post_towing_task, :if => proc { state == 'completed' }
 
   def post_towing_task
     original_task = LaunchJobTask.find(child_task_id)
