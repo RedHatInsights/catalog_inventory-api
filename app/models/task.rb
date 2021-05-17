@@ -9,6 +9,8 @@ class Task < ApplicationRecord
 
   acts_as_tenant(:tenant)
 
+  before_update :prevent_update, :if => proc { state_changed?(:from => 'timedout', :to => 'completed') }
+
   @timeout_interval = 120 * 60 # 2 hours
 
   def self.timeout_interval
@@ -24,5 +26,9 @@ class Task < ApplicationRecord
   end
 
   def dispatch
+  end
+
+  def prevent_update
+    raise("Task #{id} was marked as timed out")
   end
 end

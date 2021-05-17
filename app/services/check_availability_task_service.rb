@@ -9,7 +9,7 @@ class CheckAvailabilityTaskService < TaskService
     refresh unless @source.ready_for_check?
 
     @task = CheckAvailabilityTask.create!(task_options)
-    ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
+
     self
   rescue => e
     Rails.logger.error("Failed to create task: #{e.message}")

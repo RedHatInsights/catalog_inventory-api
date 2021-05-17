@@ -7,7 +7,6 @@ class SourceCreateTaskService < TaskService
 
     Source.create!(source_options)
     Rails.logger.info("Creating Source Finished")
-    ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
   end
 
   private

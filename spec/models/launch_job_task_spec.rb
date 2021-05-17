@@ -7,14 +7,23 @@ describe LaunchJobTask do
     Insights::API::Common::Request.with_request(default_request) { example.call }
   end
 
-  describe "after_update callback" do
+  describe "before_update callback" do
+    context "when task is timed out" do
+      let(:launch_job_task) { LaunchJobTask.create!(:name => "task", :state => "timedout", :status => "ok", :tenant => tenant, :source => source) }
+
+      it "should raise an exception" do
+        expect { launch_job_task.update(:state => "completed") }.to raise_exception("Task #{launch_job_task.id} was marked as timed out")
+      end
+    end
+  end
+
+  describe "after_commit callback" do
     context "when LaunchJobTask has completed state" do
-      let(:launch_job_task) { LaunchJobTask.create!(:name => "task", :state => "completed", :status => "ok", :tenant => tenant, :source => source) }
+      let(:launch_job_task) { LaunchJobTask.create!(:name => "task", :state => "running", :status => "ok", :tenant => tenant, :source => source) }
 
       it "calls post_launch_job_task" do
         expect(launch_job_task).to receive(:post_launch_job_task)
-
-        launch_job_task.run_callbacks :update
+        launch_job_task.update!(:state => 'completed')
       end
     end
 
@@ -24,7 +33,7 @@ describe LaunchJobTask do
       it "no calls to post_launch_job_task" do
         expect(launch_job_task).to_not receive(:post_launch_job_task)
 
-        launch_job_task.run_callbacks :update
+        launch_job_task.update!(:state => 'running')
       end
     end
   end

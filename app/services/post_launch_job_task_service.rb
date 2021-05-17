@@ -1,7 +1,7 @@
 class PostLaunchJobTaskService < TaskService
   def process
     create_service_instance
-    ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
+
     self
   end
 

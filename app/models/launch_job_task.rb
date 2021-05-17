@@ -1,7 +1,7 @@
 class LaunchJobTask < CloudConnectorTask
   SERVICE_NAME = "platform.catalog-inventory.task-output-stream".freeze
 
-  after_update :post_launch_job_task, :if => proc { state == 'completed' }
+  after_update_commit :post_launch_job_task, :if => proc { state == 'completed' }
 
   def post_launch_job_task
     topic = ClowderConfig.instance["kafkaTopics"][SERVICE_NAME] || SERVICE_NAME
