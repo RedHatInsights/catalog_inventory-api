@@ -6,7 +6,7 @@ require File.join(Bundler::Plugin.index.load_paths("bundler-inject")[0], "bundle
 gem 'activerecord-virtual_attributes', '~> 1.5'
 gem 'cloudwatchlogger',                '~> 0.2.1'
 gem 'clowder-common-ruby',             '~> 0.2.2', :require => false
-gem 'insights-api-common',             '~> 5.0.1'
+gem 'insights-api-common',             '~> 5.0.3'
 gem 'jbuilder',                        '~> 2.0'
 gem 'json-schema',                     '~> 2.8'
 gem 'manageiq-loggers',                "~> 0.4.0", ">= 0.4.2"

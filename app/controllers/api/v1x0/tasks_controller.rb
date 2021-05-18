@@ -10,17 +10,6 @@ module Api
         head :no_content
       end
 
-      # insights-api-common validate_primary_collection_id method doesn't handle
-      # the case of sources and tasks have different primary ID pattern.
-      # TODO: remove this after https://github.com/RedHatInsights/insights-api-common-rails/pull/224 is merged
-      private_class_method def self.id_regexp(primary_collection_name)
-        @id_regexp = if primary_collection_name == 'sources'
-                       /^\d+$/
-                     else
-                       /[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}/
-                     end
-      end
-
       private
 
       def params_for_update
