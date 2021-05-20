@@ -31,7 +31,8 @@ class PersisterTaskService
     else
       @task = FullRefreshPersisterTask.create!(opts)
       @upload_task.update!(:child_task_id => @task.id)
-      @source.update!(:refresh_state => "Resyncing")
+      @source.update!(:refresh_state        => "Resyncing",
+                      :last_refresh_message => "Committing changes to database")
 
       Rails.logger.info("Upload Task #{@upload_task.id} now has persister child task #{@task.id}")
 

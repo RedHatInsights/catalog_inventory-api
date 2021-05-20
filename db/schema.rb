@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_145850) do
+ActiveRecord::Schema.define(version: 2021_05_20_200350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "ingress_payloads", force: :cascade do |t|
+    t.string "task_id"
+    t.string "request_id"
+    t.jsonb "payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "service_credential_types", force: :cascade do |t|
     t.bigint "tenant_id", null: false
