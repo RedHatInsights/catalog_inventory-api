@@ -1,5 +1,13 @@
 class PostUploadTaskService < TaskService
   def process
+    ingress_payload = IngressPayload.find_by(:task_id => @options[:task].id)
+
+    if ingress_payload.present?
+      ingress_payload.check_pending_upload_tasks
+    else
+      Rails.logger.info("Upload task comes first")
+    end
+
     update_source
     self
   end
