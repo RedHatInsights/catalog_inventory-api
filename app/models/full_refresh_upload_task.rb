@@ -1,5 +1,5 @@
 class FullRefreshUploadTask < CloudConnectorTask
-  after_update_commit :post_upload_task, :if => proc { state == 'completed' && (status == 'unchanged' || status == 'error') }
+  after_update_commit :post_upload_task, :if => proc { state == 'completed' && ['unchanged', 'error', 'ok'].include?(status) }
 
   @timeout_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
 
