@@ -3,7 +3,7 @@ module Events
     def self.dispatch(event_type, payload)
       case event_type
       when "Catalog.upload"
-        IngressUploadingService.new(payload).process
+        IngressUploadService.new(payload).process
       when "Source.create"
         SourceCreateTaskService.new(payload).process
       when "Source.destroy"
