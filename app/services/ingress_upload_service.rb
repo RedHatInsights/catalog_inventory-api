@@ -12,7 +12,7 @@ class IngressUploadService
                                      :request_id => @request_id,
                                      :payload    => @options.to_json)
 
-    Rails.logger.info("Payload record #{payload} is created")
+    Rails.logger.debug("Payload record [#{payload.inspect}] is created")
 
     self
   end

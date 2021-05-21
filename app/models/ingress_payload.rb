@@ -5,8 +5,8 @@ class IngressPayload < ApplicationRecord
     task = Task.find(task_id)
 
     if task.state == 'completed'
-      Rails.logger.info("Task #{task_id} is completed, start persister task service")
-      self.class.delete(id) # delete first to avoid deadloop
+      Rails.logger.debug("Payload record [#{self.inspect}] is deleted")
+      self.class.delete(id)
 
       PersisterTaskService.new(payload).process
     else
