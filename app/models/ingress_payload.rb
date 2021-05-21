@@ -3,11 +3,10 @@ class IngressPayload < ApplicationRecord
 
   def check_pending_upload_tasks
     task = Task.find(task_id)
-    Rails.logger.info("Task: #{task.id}, #{task.state}")
 
     if task.state == 'completed'
       Rails.logger.info("Task #{task_id} is completed, start persister task service")
-      self.class.delete(id)
+      self.class.delete(id) # delete first to avoid deadloop
 
       PersisterTaskService.new(payload).process
     else
