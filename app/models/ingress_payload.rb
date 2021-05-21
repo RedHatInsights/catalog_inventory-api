@@ -7,9 +7,9 @@ class IngressPayload < ApplicationRecord
 
     if task.state == 'completed'
       Rails.logger.info("Task #{task_id} is completed, start persister task service")
-      PersisterTaskService.new(payload).process
-
       self.class.delete(id)
+
+      PersisterTaskService.new(payload).process
     else
       Rails.logger.info("Ingress Kafka Message comes first")
     end
