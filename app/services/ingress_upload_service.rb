@@ -1,4 +1,4 @@
-class IngressUploadingService
+class IngressUploadService
   def initialize(options)
     @options = JSON.parse(options).deep_symbolize_keys
 
