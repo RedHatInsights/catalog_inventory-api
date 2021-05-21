@@ -32,11 +32,11 @@ class SourceRefreshService
         if persister_task.state == "completed"
           dispatch_refresh_upload_task
         else
-          Rails.logger.error("PersisterTask #{persister_task.id} is running, please try again later")
+          Rails.logger.error("PersisterTask #{persister_task.id} for source #{persister_task.source_id} is running, please try again later")
           raise CatalogInventory::Exceptions::RefreshAlreadyRunningException, "PersisterTask #{persister_task.id} is running"
         end
       else
-        Rails.logger.error("Uploading Task #{task.id} is running, please try again later")
+        Rails.logger.error("Uploading Task #{task.id} for source #{task.source_id} is running, please try again later")
         raise CatalogInventory::Exceptions::RefreshAlreadyRunningException, "UploadTask #{task.id} is running"
       end
     end

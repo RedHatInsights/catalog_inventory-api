@@ -21,7 +21,7 @@ class PostUploadTaskService < TaskService
 
   def update_source
     case @options[:task].status
-    when "unchanged"
+    when "unchanged", "ok"
       @source.update!(unchanged_options)
     when "error"
       @source.update!(error_options)
