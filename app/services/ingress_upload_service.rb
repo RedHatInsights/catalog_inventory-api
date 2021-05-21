@@ -8,9 +8,11 @@ class IngressUploadService
   end
 
   def process
-    IngressPayload.create!(:task_id    => @task_id,
-                           :request_id => @request_id,
-                           :payload    => @options.to_json)
+    payload = IngressPayload.create!(:task_id    => @task_id,
+                                     :request_id => @request_id,
+                                     :payload    => @options.to_json)
+
+    Rails.logger.info("Payload record #{payload} is created")
 
     self
   end
