@@ -32,7 +32,7 @@ describe SourceRefreshService do
 
       it "should create a refresh task" do
         expect(subject).to receive(:dispatch_refresh_upload_task)
-        expect(Rails.logger).to receive(:error).with(/^Task.+not found, may be deleted by a cronjob, will start a new refresh task$/)
+        expect(Rails.logger).to receive(:error).with(/^RefreshTask.+not found, may be deleted by a cronjob, will start a new refresh task$/)
         subject.process
       end
     end
@@ -69,6 +69,19 @@ describe SourceRefreshService do
 
           subject.process
         end
+      end
+    end
+
+    context "when persister_task task is deleted" do
+      let(:state) { "completed" }
+      let(:child_task_id) { "123" }
+      let(:refresh_task_id) { refresh_task.id }
+
+      it "should create a refresh task" do
+        expect(subject).to receive(:dispatch_refresh_upload_task)
+        expect(Rails.logger).to receive(:error).with(/^PersisterTask.+not found, may be deleted by a cronjob, will start a new refresh task$/)
+
+        subject.process
       end
     end
   end
