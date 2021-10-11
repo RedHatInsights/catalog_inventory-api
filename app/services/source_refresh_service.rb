@@ -8,7 +8,13 @@ class SourceRefreshService
     if @source.refresh_task_id.nil?
       dispatch_refresh_upload_task
     else
-      task = Task.find(@source.refresh_task_id)
+      task = Task.find_by(:id => @source.refresh_task_id)
+
+      if task.nil?
+        Rails.logger.error("RefreshTask #{@source.refresh_task_id} for source #{@source.id} not found, may be deleted by a cronjob, will start a new refresh task")
+        dispatch_refresh_upload_task
+        return self
+      end
 
       if ["error", "unchanged"].include?(task.status)
         dispatch_refresh_upload_task
@@ -27,9 +33,17 @@ class SourceRefreshService
           raise CatalogInventory::Exceptions::RefreshAlreadyRunningException, "Waiting for payload"
         end
 
-        persister_task = Task.find(task.child_task_id)
+        persister_task = Task.find_by(:id => task.child_task_id)
+        if persister_task.nil?
+          Rails.logger.error("PersisterTask #{task.child_task_id} for source #{@source.id} not found, may be deleted by a cronjob, will start a new refresh task")
+          dispatch_refresh_upload_task
+          return self
+        end
 
         if persister_task.state == "completed"
+          dispatch_refresh_upload_task
+        elsif persister_task.timed_out?
+          Rails.logger.error("PersisterTask #{persister_task.id} for source #{persister_task.source_id} is timed out, start a new refresh task")
           dispatch_refresh_upload_task
         else
           Rails.logger.error("PersisterTask #{persister_task.id} for source #{persister_task.source_id} is running, please try again later")
