@@ -56,7 +56,44 @@ describe SourceRefreshService do
       end
     end
 
-    context "when persister_task task is timed out" do
+    context "when refresh task is running" do
+      let(:refresh_task_id) { refresh_task.id }
+      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :created_at => Time.current) }
+      let(:child_task_id) { persister_task.id }
+      let(:state) { "running" }
+
+      it "should raise an exception" do
+        expect(Rails.logger).to receive(:error).with(/^Uploading Task.+please try again later$/)
+        expect { subject.process }.to raise_error(CatalogInventory::Exceptions::RefreshAlreadyRunningException, /^UploadTask.+is running$/)
+      end
+    end
+
+    context "when persister task is completed" do
+      let(:state) { "completed" }
+      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :state => "completed", :created_at => Time.current) }
+      let(:child_task_id) { persister_task.id }
+      let(:refresh_task_id) { refresh_task.id }
+
+      it "should create a refresh task" do
+        expect(subject).to receive(:dispatch_refresh_upload_task)
+
+        subject.process
+      end
+    end
+
+    context "when persister task is running" do
+      let(:state) { "completed" }
+      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :state => "running", :created_at => Time.current) }
+      let(:child_task_id) { persister_task.id }
+      let(:refresh_task_id) { refresh_task.id }
+
+      it "should raise an exception" do
+        expect(Rails.logger).to receive(:error).with(/^PersisterTask.+is running, please try again later$/)
+        expect { subject.process }.to raise_error(CatalogInventory::Exceptions::RefreshAlreadyRunningException, /^PersisterTask #{persister_task.id} is running$/)
+      end
+    end
+
+    context "when persister task is timed out" do
       let(:state) { "completed" }
       let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :created_at => Time.current) }
       let(:child_task_id) { persister_task.id }
@@ -72,7 +109,7 @@ describe SourceRefreshService do
       end
     end
 
-    context "when persister_task task is deleted" do
+    context "when persister task is deleted" do
       let(:state) { "completed" }
       let(:child_task_id) { "123" }
       let(:refresh_task_id) { refresh_task.id }
@@ -82,6 +119,17 @@ describe SourceRefreshService do
         expect(Rails.logger).to receive(:error).with(/^PersisterTask.+not found, may be deleted by a cronjob, will start a new refresh task$/)
 
         subject.process
+      end
+    end
+
+    context "when persister task id is nil" do
+      let(:state) { "completed" }
+      let(:child_task_id) { nil }
+      let(:refresh_task_id) { refresh_task.id }
+
+      it "should raise an exception" do
+        expect(Rails.logger).to receive(:error).with(/Waiting for payload, please try again later/)
+        expect { subject.process }.to raise_error(CatalogInventory::Exceptions::RefreshAlreadyRunningException, /Waiting for payload/)
       end
     end
   end
