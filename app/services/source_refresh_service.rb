@@ -43,6 +43,7 @@ class SourceRefreshService
         if persister_task.state == "completed"
           dispatch_refresh_upload_task
         elsif persister_task.timed_out?
+          persister_task.update!(:state => "timedout", :status => "error", :output => {"errors" => ["Timed out"]})
           Rails.logger.error("PersisterTask #{persister_task.id} for source #{persister_task.source_id} is timed out, start a new refresh task")
           dispatch_refresh_upload_task
         else
