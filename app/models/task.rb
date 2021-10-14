@@ -11,7 +11,7 @@ class Task < ApplicationRecord
 
   before_update :prevent_update, :if => proc { state_changed?(:from => 'timedout', :to => 'completed') }
 
-  @timeout_interval = 120 * 60 # 2 hours
+  @timeout_interval = 30 * 60 # 30 mins
 
   def self.timeout_interval
     @timeout_interval

@@ -150,9 +150,9 @@ parameters:
 - name: INACTIVE_TASK_REMINDER_TIME
   value: "30"
 - name: SOURCE_REFRESH_TIMEOUT
-  value: "10"
+  value: "30"
 - name: CHECK_AVAILABILITY_TIMEOUT
-  value: "10"
+  value: "30"
 - name: LOG_LEVEL
   value: INFO
 - description: Cpu limit of service
