@@ -58,7 +58,15 @@ describe SourceRefreshService do
 
     context "when refresh task is running" do
       let(:refresh_task_id) { refresh_task.id }
-      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :created_at => Time.current) }
+      let(:persister_task) {
+        FullRefreshPersisterTask.create!(
+          :name   => "persister_task",
+          :tenant => tenant,
+          :status => "ok",
+          :state  => "pending",
+          :created_at => Time.current
+        )
+      }
       let(:child_task_id) { persister_task.id }
       let(:state) { "running" }
 
@@ -70,7 +78,15 @@ describe SourceRefreshService do
 
     context "when persister task is completed" do
       let(:state) { "completed" }
-      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :state => "completed", :created_at => Time.current) }
+      let(:persister_task) {
+        FullRefreshPersisterTask.create!(
+          :name   => "persister_task",
+          :tenant => tenant,
+          :status => "ok",
+          :state  => "completed",
+          :created_at => Time.current
+        )
+      }
       let(:child_task_id) { persister_task.id }
       let(:refresh_task_id) { refresh_task.id }
 
@@ -83,7 +99,15 @@ describe SourceRefreshService do
 
     context "when persister task is running" do
       let(:state) { "completed" }
-      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :state => "running", :created_at => Time.current) }
+      let(:persister_task) {
+        FullRefreshPersisterTask.create!(
+          :name   => "persister_task",
+          :tenant => tenant,
+          :status => "ok",
+          :state  => "running",
+          :created_at => Time.current
+        )
+      }
       let(:child_task_id) { persister_task.id }
       let(:refresh_task_id) { refresh_task.id }
 
@@ -95,7 +119,15 @@ describe SourceRefreshService do
 
     context "when persister task is timed out" do
       let(:state) { "completed" }
-      let(:persister_task) { FactoryBot.create(:task, :tenant => tenant, :created_at => Time.current) }
+      let(:persister_task) {
+        FullRefreshPersisterTask.create!(
+          :name   => "persister_task",
+          :tenant => tenant,
+          :status => "ok",
+          :state  => "pending",
+          :created_at => Time.current
+        )
+      }
       let(:child_task_id) { persister_task.id }
       let(:refresh_task_id) { refresh_task.id }
 
