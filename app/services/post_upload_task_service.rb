@@ -21,8 +21,10 @@ class PostUploadTaskService < TaskService
 
   def update_source
     case @options[:task].status
-    when "unchanged", "ok"
+    when "unchanged"
       @source.update!(unchanged_options)
+    when "ok"
+      @source.update!(ok_options)
     when "error"
       @source.update!(error_options)
     else
@@ -37,6 +39,12 @@ class PostUploadTaskService < TaskService
      :last_refresh_message       => @options[:task].message,
      :last_successful_refresh_at => @options[:task].created_at,
      :refresh_state              => "Done"}
+  end
+
+  def ok_options
+    {:refresh_finished_at  => Time.current,
+     :last_refresh_message => "Asking persister to commit changes to Database",
+     :refresh_state        => "Resyncing"}
   end
 
   def error_options
